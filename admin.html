@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero Shop — Админка</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#050a14;font-family:-apple-system,'Segoe UI',Roboto,sans-serif;color:#e0ecff;padding:24px 16px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto}
+.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid rgba(0,120,255,.25);flex-wrap:wrap;gap:12px}
+.head h1{font-size:26px;font-weight:800;color:#fff}
+.head h1 span{color:#2e7eff;text-shadow:0 0 20px rgba(46,126,255,.6)}
+.head a{color:#2e7eff;text-decoration:none;font-weight:600;font-size:14px;padding:10px 20px;border:1px solid rgba(46,126,255,.5);border-radius:40px;transition:.2s}
+.head a:hover{background:rgba(46,126,255,.15)}
+.layout{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}}
+.panel{background:#08101f;border:1px solid rgba(0,120,255,.25);border-radius:20px;padding:22px}
+.panel h2{font-size:17px;font-weight:700;margin-bottom:18px;color:#d6e5ff}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#4a6fa5;font-weight:700;margin-bottom:6px}
+.fg input,.fg select,.fg textarea{width:100%;background:#0d1629;border:1px solid #1e3a6b;border-radius:12px;padding:11px 14px;color:#e0ecff;font-size:14px;font-family:inherit;outline:none;transition:.2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:#2e7eff;box-shadow:0 0 0 3px rgba(46,126,255,.15)}
+.fg textarea{resize:vertical;min-height:70px}
+.fg select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232e7eff' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'/%3e%3c/svg%3e");background-repeat:no-repeat;background-position:right 14px center;background-size:16px;padding-right:40px}
+.fg select option{background:#0d1629}
+.btn{width:100%;background:#2e7eff;color:#fff;border:none;border-radius:40px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 0 20px rgba(46,126,255,.5);font-family:inherit;margin-bottom:8px}
+.btn:hover{background:#4a8eff}
+.btn.green{background:#00a86b;box-shadow:0 0 20px rgba(0,168,107,.5)}
+.btn.green:hover{background:#00c97f}
+.btn.red{background:#d63a3a;box-shadow:0 0 20px rgba(214,58,58,.5)}
+.btn.red:hover{background:#ee4a4a}
+.list{display:flex;flex-direction:column;gap:8px;max-height:600px;overflow-y:auto;padding-right:4px}
+.list::-webkit-scrollbar{width:5px}
+.list::-webkit-scrollbar-thumb{background:#1e3a6b;border-radius:3px}
+.item{display:flex;gap:10px;align-items:center;padding:10px;background:#0d1629;border:1px solid rgba(30,80,180,.25);border-radius:14px}
+.item img,.item .no-img{width:48px;height:48px;border-radius:10px;object-fit:cover;background:#0b1a31;border:1px solid #1e3a6b;flex-shrink:0}
+.item .no-img{display:flex;align-items:center;justify-content:center;font-size:20px}
+.item .info{flex:1;min-width:0}
+.item .info .c{font-size:10px;color:#2e7eff;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.item .info .n{font-size:13px;font-weight:600;color:#e0ecff;margin:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item .info .p{font-size:12px;color:#6b8cff;font-weight:700}
+.item .del{background:rgba(255,60,60,.15);border:1px solid rgba(255,60,60,.4);color:#ff6b6b;width:32px;height:32px;border-radius:10px;cursor:pointer;font-size:14px;flex-shrink:0}
+.item .del:hover{background:rgba(255,60,60,.3);color:#fff}
+.empty{text-align:center;padding:30px;color:#3f5e8a;font-size:13px}
+.code-box{background:#0d1629;border:1px solid #1e3a6b;border-radius:14px;padding:14px;font-family:Consolas,monospace;font-size:11px;color:#9ec5ff;max-height:250px;overflow-y:auto;white-space:pre-wrap;word-break:break-all;margin-bottom:12px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#2e7eff;color:#fff;padding:12px 24px;border-radius:40px;font-weight:700;font-size:13px;box-shadow:0 0 30px rgba(46,126,255,.8);opacity:0;transition:.3s;pointer-events:none;z-index:999}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1>Zero <span>Shop</span> — Админка</h1>
+    <a href="index.html" target="_blank">→ Открыть магазин</a>
+  </div>
+  <div class="layout">
+    <div class="panel">
+      <h2>➕ Добавить товар</h2>
+      <form id="form">
+        <div class="fg">
+          <label>Категория</label>
+          <select id="cat" required>
+            <option value="">Выбери...</option>
+            <option>Под-системы</option>
+            <option>Одноразки</option>
+            <option>Расходники</option>
+            <option>Жидкости</option>
+            <option>Аксессуары</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Название</label>
+          <input type="text" id="name" required placeholder="Elf Bar BC5000">
+        </div>
+        <div class="fg">
+          <label>Цена ₽</label>
+          <input type="number" id="price" required min="0" placeholder="1490">
+        </div>
+        <div class="fg">
+          <label>Ссылка на картинку (URL)</label>
+          <input type="text" id="image" placeholder="https://...jpg">
+        </div>
+        <div class="fg">
+          <label>Описание</label>
+          <textarea id="desc" placeholder="Кратко о товаре..."></textarea>
+        </div>
+        <button type="submit" class="btn">Добавить в список</button>
+      </form>
+
+      <h2 style="margin-top:20px">📋 Итоговый код для products.js</h2>
+      <div class="code-box" id="code"></div>
+      <button class="btn green" id="copyBtn">📋 Скопировать код</button>
+      <button class="btn" id="downloadBtn">⬇️ Скачать products.js</button>
+    </div>
+
+    <div class="panel">
+      <h2>📦 Товары (<span id="count">0</span>)</h2>
+      <div class="list" id="list"><div class="empty">Пока нет товаров</div></div>
+      <button class="btn red" style="margin-top:14px" id="clearBtn">🗑 Очистить всё</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const KEY = 'zero_admin_products';
+let items = JSON.parse(localStorage.getItem(KEY) || '[]');
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+const fmt = n => Number(n).toLocaleString('ru-RU');
+
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove('show'),1800)}
+function save(){localStorage.setItem(KEY,JSON.stringify(items));render()}
+
+function render(){
+  $('count').textContent = items.length;
+  const l = $('list');
+  if(!items.length){l.innerHTML='<div class="empty">Пока нет товаров</div>'}
+  else{
+    l.innerHTML = items.map((p,i)=>`
+      <div class="item">
+        ${p.image?`<img src="${esc(p.image)}" onerror="this.outerHTML='<div class=\\'no-img\\'>💨</div>'">`:'<div class="no-img">💨</div>'}
+        <div class="info">
+          <div class="c">${esc(p.category)}</div>
+          <div class="n">${esc(p.name)}</div>
+          <div class="p">${fmt(p.price)} ₽</div>
+        </div>
+        <button class="del" data-i="${i}">✕</button>
+      </div>`).join('');
+    l.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{items.splice(+b.dataset.i,1);save()});
+  }
+  updateCode();
+}
+
+function updateCode(){
+  const code = 'window.PRODUCTS = ' + JSON.stringify(items, null, 2) + ';';
+  $('code').textContent = code;
+}
+
+$('form').onsubmit = e => {
+  e.preventDefault();
+  items.push({
+    id: String(Date.now()),
+    category: $('cat').value,
+    name: $('name').value.trim(),
+    price: Number($('price').value),
+    image: $('image').value.trim(),
+    description: $('desc').value.trim()
+  });
+  save();
+  $('form').reset();
+  toast('✅ Товар добавлен');
+};
+
+$('copyBtn').onclick = async () => {
+  try{
+    await navigator.clipboard.writeText($('code').textContent);
+    toast('📋 Скопировано!');
+  }catch(e){
+    toast('❌ Не удалось скопировать');
+  }
+};
+
+$('downloadBtn').onclick = () => {
+  const blob = new Blob([$('code').textContent], {type:'text/javascript'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'products.js';
+  a.click();
+  toast('⬇️ Скачано');
+};
+
+$('clearBtn').onclick = () => {
+  if(!confirm('Очистить всё?')) return;
+  items = [];
+  save();
+  toast('🗑 Очищено');
+};
+
+render();
+</script>
+</body>
+</html>
