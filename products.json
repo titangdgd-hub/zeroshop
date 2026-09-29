@@ -38,7 +38,7 @@ window.PRODUCTS = [
     price: 590,
     image: '',
     description: 'Силиконовый чехол.'
-  }
+  },
   window.PRODUCTS = [
   {
     "id": "1790689742269",
