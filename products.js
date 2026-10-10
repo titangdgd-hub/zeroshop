@@ -10,6 +10,16 @@ window.PRODUCTS = [
     comingSoonDate: ''
   },
   {
+    id: '1790689742271',
+    category: 'Расходники',
+    name: 'Снюс VELO',
+    price: 150,
+    image: 'i.jpg',
+    description: 'Новинка, ожидается в ближайшее время',
+    comingSoon: true,
+    comingSoonDate: '25 октября'
+  },
+  {
     id: '1790689742270',
     category: 'Под-системы',
     name: 'XROS 5 Mini',
