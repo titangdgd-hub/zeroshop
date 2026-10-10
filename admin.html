@@ -24,6 +24,10 @@ body{background:#050a14;font-family:-apple-system,'Segoe UI',Roboto,sans-serif;c
 .fg textarea{resize:vertical;min-height:70px}
 .fg select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232e7eff' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'/%3e%3c/svg%3e");background-repeat:no-repeat;background-position:right 14px center;background-size:16px;padding-right:40px}
 .fg select option{background:#0d1629}
+.check{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:12px 14px;background:#0d1629;border:1px solid #1e3a6b;border-radius:12px;cursor:pointer;transition:.2s}
+.check:hover{border-color:#2e7eff}
+.check input{width:auto;transform:scale(1.2);accent-color:#2e7eff;cursor:pointer}
+.check span{font-size:13px;color:#cfe1ff;font-weight:600;letter-spacing:0;text-transform:none}
 .btn{width:100%;background:#2e7eff;color:#fff;border:none;border-radius:40px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 0 20px rgba(46,126,255,.5);font-family:inherit;margin-bottom:8px}
 .btn:hover{background:#4a8eff}
 .btn.green{background:#00a86b;box-shadow:0 0 20px rgba(0,168,107,.5)}
@@ -38,8 +42,10 @@ body{background:#050a14;font-family:-apple-system,'Segoe UI',Roboto,sans-serif;c
 .item .no-img{display:flex;align-items:center;justify-content:center;font-size:20px}
 .item .info{flex:1;min-width:0}
 .item .info .c{font-size:10px;color:#2e7eff;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.item .info .c .soon-tag{color:#ffd166;margin-left:4px}
 .item .info .n{font-size:13px;font-weight:600;color:#e0ecff;margin:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .item .info .p{font-size:12px;color:#6b8cff;font-weight:700}
+.item .info .p .date{color:#7a93b8;font-weight:500}
 .item .del{background:rgba(255,60,60,.15);border:1px solid rgba(255,60,60,.4);color:#ff6b6b;width:32px;height:32px;border-radius:10px;cursor:pointer;font-size:14px;flex-shrink:0}
 .item .del:hover{background:rgba(255,60,60,.3);color:#fff}
 .empty{text-align:center;padding:30px;color:#3f5e8a;font-size:13px}
@@ -85,6 +91,17 @@ body{background:#050a14;font-family:-apple-system,'Segoe UI',Roboto,sans-serif;c
           <label>Описание</label>
           <textarea id="desc" placeholder="Кратко о товаре..."></textarea>
         </div>
+
+        <label class="check" for="soon">
+          <input type="checkbox" id="soon">
+          <span>⏳ Скоро в продаже</span>
+        </label>
+
+        <div class="fg" id="soonDateWrap" style="display:none">
+          <label>Дата поступления (необязательно)</label>
+          <input type="text" id="soonDate" placeholder="например: 25 мая">
+        </div>
+
         <button type="submit" class="btn">Добавить в список</button>
       </form>
 
@@ -115,6 +132,10 @@ const fmt = n => Number(n).toLocaleString('ru-RU');
 function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove('show'),1800)}
 function save(){localStorage.setItem(KEY,JSON.stringify(items));render()}
 
+$('soon').onchange = () => {
+  $('soonDateWrap').style.display = $('soon').checked ? 'block' : 'none';
+};
+
 function render(){
   $('count').textContent = items.length;
   const l = $('list');
@@ -124,9 +145,9 @@ function render(){
       <div class="item">
         ${p.image?`<img src="${esc(p.image)}" onerror="this.outerHTML='<div class=\\'no-img\\'>💨</div>'">`:'<div class="no-img">💨</div>'}
         <div class="info">
-          <div class="c">${esc(p.category)}</div>
+          <div class="c">${esc(p.category)}${p.comingSoon?'<span class="soon-tag">• СКОРО</span>':''}</div>
           <div class="n">${esc(p.name)}</div>
-          <div class="p">${fmt(p.price)} ₽</div>
+          <div class="p">${fmt(p.price)} ₽${p.comingSoon && p.comingSoonDate?` <span class="date">• с ${esc(p.comingSoonDate)}</span>`:''}</div>
         </div>
         <button class="del" data-i="${i}">✕</button>
       </div>`).join('');
@@ -142,17 +163,21 @@ function updateCode(){
 
 $('form').onsubmit = e => {
   e.preventDefault();
+  const soon = $('soon').checked;
   items.push({
     id: String(Date.now()),
     category: $('cat').value,
     name: $('name').value.trim(),
     price: Number($('price').value),
     image: $('image').value.trim(),
-    description: $('desc').value.trim()
+    description: $('desc').value.trim(),
+    comingSoon: soon,
+    comingSoonDate: soon ? $('soonDate').value.trim() : ''
   });
   save();
   $('form').reset();
-  toast('✅ Товар добавлен');
+  $('soonDateWrap').style.display = 'none';
+  toast(soon ? '⏳ Товар добавлен (скоро в продаже)' : '✅ Товар добавлен');
 };
 
 $('copyBtn').onclick = async () => {
