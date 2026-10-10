@@ -95,8 +95,34 @@ h1 span{color:#2e7eff;text-shadow:0 0 20px rgba(46,126,255,.6)}
 .total{display:flex;justify-content:space-between;align-items:center;padding:16px;background:#0d1629;border:1px solid rgba(46,126,255,.4);border-radius:16px;margin-bottom:14px}
 .total .l{font-size:13px;color:#7a93b8;font-weight:600;text-transform:uppercase;letter-spacing:1px}
 .total .v{font-size:22px;font-weight:800;color:#2e7eff}
-.cart-empty{text-align:center;padding:50px 20px;color:#3f5e8a}
-.cart-empty span{font-size:60px;display:block;margin-bottom:16px}
+
+/* Красивое пустое состояние корзины */
+.cart-empty{
+  text-align:center;
+  padding:40px 20px 30px;
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+}
+.cart-empty .ill{
+  width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle at 50% 40%, rgba(46,126,255,.28), rgba(46,126,255,.05) 70%, transparent 75%);
+  display:flex;align-items:center;justify-content:center;
+  font-size:60px;
+  box-shadow:0 0 40px rgba(46,126,255,.25) inset;
+  animation:floaty 3.4s ease-in-out infinite;
+}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.cart-empty h3{font-size:17px;font-weight:800;color:#fff;margin:0}
+.cart-empty p{font-size:13px;color:#7a93b8;line-height:1.5;margin:0;max-width:280px}
+.cart-empty .go{
+  margin-top:8px;
+  background:#2e7eff;color:#fff;border:none;
+  border-radius:40px;padding:13px 26px;
+  font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;
+  box-shadow:0 0 24px rgba(46,126,255,.55);
+  transition:.2s;
+}
+.cart-empty .go:hover{background:#4a8eff;transform:translateY(-1px)}
+
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);background:#2e7eff;color:#fff;padding:12px 24px;border-radius:40px;font-weight:700;font-size:13px;box-shadow:0 0 30px rgba(46,126,255,.8);opacity:0;transition:.3s;pointer-events:none;z-index:2000;white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 </style>
@@ -142,7 +168,7 @@ const tg = window.Telegram?.WebApp;
 if (tg) { try { tg.ready(); tg.expand(); tg.setHeaderColor('#08101f'); } catch(e){} }
 
 const CATEGORIES = ['Все','Под-системы','Одноразки','Расходники','Жидкости','Аксессуары'];
-const TG = 'asvim';
+const TG = 'zeromanager'; // менеджер
 const products = window.PRODUCTS || [];
 let cart = JSON.parse(localStorage.getItem('zero_cart') || '[]');
 let cat = 'Все';
@@ -196,7 +222,6 @@ function openPM(id){
 
   const addBtn = $('mAdd');
 
-  // очистка прошлых вставок
   const old = document.getElementById('mSoon'); if(old) old.remove();
   const oldDate = document.getElementById('mSoonDate'); if(oldDate) oldDate.remove();
 
@@ -247,7 +272,22 @@ function removeItem(id){haptic();cart=cart.filter(i=>i.id!==id);save();renderCar
 function total(){return cart.reduce((s,i)=>s+i.price*i.qty,0)}
 
 function renderCart(){
-  if(!cart.length){$('cartBody').innerHTML='<div class="cart-empty"><span>🛒</span>Корзина пуста</div>';return}
+  if(!cart.length){
+    $('cartBody').innerHTML = `
+      <div class="cart-empty">
+        <div class="ill">🛍️</div>
+        <h3>Тут пока ничего нет</h3>
+        <p>Самое время выбрать что-нибудь вкусное — загляни в каталог.</p>
+        <button class="go" id="goCatalog">Перейти в каталог</button>
+      </div>`;
+    $('goCatalog').onclick = () => {
+      haptic();
+      closeCM();
+      document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+      $('navHome').classList.add('active');
+    };
+    return;
+  }
   $('cartBody').innerHTML = `
     <div class="cart-list">
       ${cart.map(i=>`
@@ -276,36 +316,44 @@ function renderCart(){
 function openCM(){haptic();renderCart();$('cm').classList.add('active');tg?.BackButton?.show()}
 function closeCM(){$('cm').classList.remove('active');if(!$('pm').classList.contains('active'))tg?.BackButton?.hide()}
 
+/* ============ Оформление заказа → чат с менеджером ============ */
+function buildOrderText(){
+  const lines = [];
+  lines.push('🛒 Заказ в Zero Shop');
+  lines.push('');
+  cart.forEach((i, n) => {
+    lines.push(`${n+1}. ${i.name}`);
+    lines.push(`   ${i.qty} × ${fmt(i.price)} ₽ = ${fmt(i.price * i.qty)} ₽`);
+  });
+  lines.push('');
+  lines.push(`💰 Итого: ${fmt(total())} ₽`);
+  lines.push('');
+  lines.push('Пожалуйста, подтвердите заказ 🙌');
+  return lines.join('\n');
+}
+
 function checkout(){
-  if(!cart.length)return;
+  if(!cart.length) return;
   haptic();
 
-  // страховка: убираем товары, которые стали "скоро"
-  const before = cart.length;
-  cart = cart.filter(i=>{
-    const p = products.find(x=>x.id===i.id);
-    return !p?.comingSoon;
-  });
-  if(cart.length !== before) save();
-  if(!cart.length){toast('Все товары скоро в продаже');return}
-
   const total_ = total();
-  const data = {items:cart.map(i=>({id:i.id,name:i.name,price:i.price,qty:i.qty})),total:total_,ts:Date.now()};
+  const text = buildOrderText();
+  const url = `https://t.me/${TG}?text=${encodeURIComponent(text)}`;
 
-  if(tg?.sendData){
+  // Попытка 1: нативный API Telegram WebApp
+  if(tg?.openTelegramLink){
     try{
-      tg.sendData(JSON.stringify(data));
-      toast('📩 Заказ отправлен!');
-      cart=[];save();
-      setTimeout(()=>tg.close(),1200);
+      tg.openTelegramLink(url);
+      toast('📩 Открываю чат с менеджером...');
+      cart = []; save(); renderCart();
       return;
     }catch(e){}
   }
 
-  let text = '🛒 Заказ в Zero Shop:\n\n';
-  cart.forEach((i,n)=>{text+=`${n+1}. ${i.name}\n   ${i.qty} × ${i.price} ₽ = ${i.price*i.qty} ₽\n`});
-  text += `\n💰 Итого: ${total_} ₽`;
-  window.open(`https://t.me/${TG}?text=${encodeURIComponent(text)}`,'_blank');
+  // Попытка 2: обычное открытие в новой вкладке
+  window.open(url, '_blank');
+  toast('📩 Открываю чат с менеджером...');
+  cart = []; save(); renderCart();
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
