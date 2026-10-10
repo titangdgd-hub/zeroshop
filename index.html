@@ -17,10 +17,32 @@ h1 span{color:#2e7eff;text-shadow:0 0 20px rgba(46,126,255,.6)}
 .cat{flex-shrink:0;padding:8px 16px;background:#0d1629;border:1px solid #1e3a6b;border-radius:40px;color:#6b8cff;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
 .cat.active{background:#1e3a6b;border-color:#2e7eff;color:#fff;box-shadow:0 0 16px rgba(46,126,255,.5)}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
-.card{background:#0d1629;border-radius:18px;padding:12px;border:1px solid rgba(30,80,180,.25);cursor:pointer;display:flex;flex-direction:column;gap:8px;transition:.2s}
+.card{position:relative;overflow:hidden;background:#0d1629;border-radius:18px;padding:12px;border:1px solid rgba(30,80,180,.25);cursor:pointer;display:flex;flex-direction:column;gap:8px;transition:.2s}
 .card:hover{border-color:rgba(46,126,255,.7);transform:translateY(-2px)}
+.card.soon{border-color:rgba(255,209,102,.35)}
+.card.soon .card-img{filter:saturate(.6) brightness(.85)}
+.card.soon .plus{opacity:.35;pointer-events:none;border-color:#4a6fa5;color:#4a6fa5;background:#0d1629}
 .card-img{height:110px;background:linear-gradient(135deg,#0b1a31,#14274a);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:40px;border:1px solid #1e3a6b;overflow:hidden}
 .card-img img{width:100%;height:100%;object-fit:cover}
+
+.ribbon{
+  position:absolute;top:14px;right:-38px;
+  transform:rotate(45deg);
+  background:linear-gradient(90deg,#2e7eff,#00c2ff);
+  color:#fff;font-size:10px;font-weight:800;letter-spacing:2px;
+  padding:5px 44px;
+  box-shadow:0 0 18px rgba(46,126,255,.9), 0 0 40px rgba(46,126,255,.35);
+  border-top:1px solid rgba(255,255,255,.35);
+  border-bottom:1px solid rgba(0,0,0,.25);
+  z-index:3;pointer-events:none;text-transform:uppercase;overflow:hidden;
+}
+.ribbon::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);
+  animation:shine 2.6s infinite;
+}
+@keyframes shine{0%{transform:translateX(-120%)}60%{transform:translateX(120%)}100%{transform:translateX(120%)}}
+
 .brand{font-size:9px;font-weight:700;color:#2e7eff;text-transform:uppercase;letter-spacing:1px}
 .name{font-size:13px;font-weight:600;color:#e0ecff;line-height:1.3;min-height:34px}
 .bottom{display:flex;justify-content:space-between;align-items:center;margin-top:auto}
@@ -40,15 +62,24 @@ h1 span{color:#2e7eff;text-shadow:0 0 20px rgba(46,126,255,.6)}
 .overlay.active .modal{transform:scale(1)}
 .close{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.1);color:#8aa;font-size:18px;cursor:pointer;z-index:10}
 .close:hover{background:rgba(255,60,60,.3);color:#fff}
-.m-img{width:100%;height:200px;border-radius:18px;background:linear-gradient(135deg,#0b1a31,#14274a);border:1px solid #1e3a6b;display:flex;align-items:center;justify-content:center;font-size:70px;margin-bottom:16px;overflow:hidden}
+.m-img{width:100%;height:200px;border-radius:18px;background:linear-gradient(135deg,#0b1a31,#14274a);border:1px solid #1e3a6b;display:flex;align-items:center;justify-content:center;font-size:70px;margin-bottom:16px;overflow:hidden;position:relative}
 .m-img img{width:100%;height:100%;object-fit:cover}
 .m-cat{font-size:10px;font-weight:800;color:#2e7eff;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
 .m-name{font-size:22px;font-weight:800;color:#fff;margin-bottom:10px;line-height:1.2}
 .m-desc{font-size:14px;color:#8aa6c8;line-height:1.5;margin-bottom:18px}
 .m-price{font-size:26px;font-weight:800;color:#2e7eff;margin-bottom:18px}
 .m-price small{font-size:14px;color:#4a6fa5}
+.m-soon{
+  display:inline-block;background:linear-gradient(90deg,#2e7eff,#00c2ff);
+  color:#fff;font-size:11px;font-weight:800;letter-spacing:2px;
+  padding:6px 14px;border-radius:40px;margin-bottom:14px;
+  box-shadow:0 0 18px rgba(46,126,255,.7);text-transform:uppercase;
+}
+.m-soon-date{font-size:12px;color:#8aa6c8;margin:-8px 0 16px}
 .btn{width:100%;background:#2e7eff;color:#fff;border:none;border-radius:40px;padding:15px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 0 24px rgba(46,126,255,.6);font-family:inherit}
 .btn:hover{background:#4a8eff}
+.btn[disabled]{opacity:.55;cursor:not-allowed;box-shadow:none;background:#1e3a6b}
+.btn[disabled]:hover{background:#1e3a6b}
 .cart-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;max-height:45vh;overflow-y:auto}
 .cart-item{display:flex;gap:12px;align-items:center;padding:12px;background:#0d1629;border:1px solid rgba(30,80,180,.25);border-radius:14px}
 .cart-item img,.no-img{width:50px;height:50px;border-radius:12px;object-fit:cover;background:#0b1a31;border:1px solid #1e3a6b;flex-shrink:0}
@@ -135,7 +166,8 @@ function renderGrid(){
   const list = cat==='Все'?products:products.filter(p=>p.category===cat);
   if(!list.length){$('grid').innerHTML='<div class="empty">Тут пока пусто</div>';return}
   $('grid').innerHTML = list.map(p=>`
-    <div class="card" data-id="${p.id}">
+    <div class="card ${p.comingSoon?'soon':''}" data-id="${p.id}">
+      ${p.comingSoon?'<div class="ribbon">Скоро</div>':''}
       <div class="card-img">${p.image?`<img src="${esc(p.image)}" onerror="this.parentElement.innerHTML='💨'">`:'💨'}</div>
       <div class="brand">${esc(p.category)}</div>
       <div class="name">${esc(p.name)}</div>
@@ -145,7 +177,12 @@ function renderGrid(){
       </div>
     </div>`).join('');
   document.querySelectorAll('.card').forEach(c=>c.onclick=e=>{if(e.target.closest('[data-add]'))return;openPM(c.dataset.id)});
-  document.querySelectorAll('[data-add]').forEach(b=>b.onclick=e=>{e.stopPropagation();addToCart(b.dataset.add)});
+  document.querySelectorAll('[data-add]').forEach(b=>b.onclick=e=>{
+    e.stopPropagation();
+    const p = products.find(x=>x.id===b.dataset.add);
+    if(p?.comingSoon){toast('⏳ Скоро в продаже');return}
+    addToCart(b.dataset.add);
+  });
 }
 
 function openPM(id){
@@ -156,6 +193,35 @@ function openPM(id){
   $('mn').textContent = p.name;
   $('md').textContent = p.description || 'Описание отсутствует';
   $('mp').innerHTML = `${fmt(p.price)} <small>₽</small>`;
+
+  const addBtn = $('mAdd');
+
+  // очистка прошлых вставок
+  const old = document.getElementById('mSoon'); if(old) old.remove();
+  const oldDate = document.getElementById('mSoonDate'); if(oldDate) oldDate.remove();
+
+  if(p.comingSoon){
+    const badge = document.createElement('div');
+    badge.id = 'mSoon';
+    badge.className = 'm-soon';
+    badge.textContent = '⏳ Скоро в продаже';
+    $('mn').insertAdjacentElement('afterend', badge);
+
+    if(p.comingSoonDate){
+      const d = document.createElement('div');
+      d.id = 'mSoonDate';
+      d.className = 'm-soon-date';
+      d.textContent = 'Ожидается: ' + p.comingSoonDate;
+      badge.insertAdjacentElement('afterend', d);
+    }
+
+    addBtn.disabled = true;
+    addBtn.textContent = 'Скоро в продаже';
+  } else {
+    addBtn.disabled = false;
+    addBtn.textContent = 'Добавить в корзину';
+  }
+
   $('pm').classList.add('active');
   tg?.BackButton?.show();
 }
@@ -163,6 +229,7 @@ function closePM(){$('pm').classList.remove('active');cur=null;if(!$('cm').class
 
 function addToCart(id){
   const p = products.find(x=>x.id===id); if(!p)return;
+  if(p.comingSoon){toast('⏳ Скоро в продаже');return}
   haptic();
   const ex = cart.find(i=>i.id===id);
   if(ex) ex.qty++; else cart.push({id:p.id,name:p.name,price:+p.price,image:p.image||'',qty:1});
@@ -212,6 +279,16 @@ function closeCM(){$('cm').classList.remove('active');if(!$('pm').classList.cont
 function checkout(){
   if(!cart.length)return;
   haptic();
+
+  // страховка: убираем товары, которые стали "скоро"
+  const before = cart.length;
+  cart = cart.filter(i=>{
+    const p = products.find(x=>x.id===i.id);
+    return !p?.comingSoon;
+  });
+  if(cart.length !== before) save();
+  if(!cart.length){toast('Все товары скоро в продаже');return}
+
   const total_ = total();
   const data = {items:cart.map(i=>({id:i.id,name:i.name,price:i.price,qty:i.qty})),total:total_,ts:Date.now()};
 
@@ -238,7 +315,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   $('navCart').onclick = ()=>{document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));$('navCart').classList.add('active');openCM()};
   $('navTg').onclick = ()=>{haptic();window.open('https://t.me/'+TG,'_blank')};
 
-  $('mAdd').onclick = ()=>{if(cur){addToCart(cur.id);closePM()}};
+  $('mAdd').onclick = ()=>{if(cur && !cur.comingSoon){addToCart(cur.id);closePM()}};
 
   $('pm').onclick = e=>{if(e.target===$('pm'))closePM()};
   $('cm').onclick = e=>{if(e.target===$('cm'))closeCM()};
