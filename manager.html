@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Zero Shop · Менеджер</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:#050a14;color:#e0ecff;font-family:-apple-system,'Segoe UI',Roboto,sans-serif;
+  min-height:100vh;padding:24px 16px;position:relative;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:-30%;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(46,126,255,.12), transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(0,194,255,.10), transparent 45%);
+  animation:bgMove 20s ease-in-out infinite alternate;pointer-events:none;z-index:0;
+}
+@keyframes bgMove{0%{transform:translate(0,0) scale(1)}50%{transform:translate(3%,-3%) scale(1.05)}100%{transform:translate(-3%,3%) scale(1)}}
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto}
+.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid rgba(0,120,255,.25);flex-wrap:wrap;gap:12px}
+.head h1{font-size:26px;font-weight:800;color:#fff}
+.head h1 span{color:#2e7eff;text-shadow:0 0 20px rgba(46,126,255,.6)}
+.head .tag{font-size:11px;color:#8aa6c8;background:rgba(46,126,255,.12);padding:6px 12px;border-radius:40px;border:1px solid rgba(46,126,255,.35);font-weight:700}
+.layout{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}}
+.panel{background:#08101f;border:1px solid rgba(0,120,255,.25);border-radius:20px;padding:22px}
+.panel h2{font-size:15px;font-weight:800;margin-bottom:16px;color:#d6e5ff;text-transform:uppercase;letter-spacing:1.5px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#4a6fa5;font-weight:700;margin-bottom:6px}
+.fg input,.fg textarea{width:100%;background:#0d1629;border:1px solid #1e3a6b;border-radius:12px;padding:12px 14px;color:#e0ecff;font-size:14px;font-family:inherit;outline:none;transition:.2s}
+.fg input:focus,.fg textarea:focus{border-color:#2e7eff;box-shadow:0 0 0 3px rgba(46,126,255,.15)}
+.fg textarea{min-height:100px;font-family:Consolas,monospace;font-size:12px;resize:vertical}
+.btn{width:100%;background:#2e7eff;color:#fff;border:none;border-radius:40px;padding:13px;font-size:14px;font-weight:800;cursor:pointer;box-shadow:0 0 20px rgba(46,126,255,.5);font-family:inherit;margin-bottom:8px;transition:.2s}
+.btn:hover{background:#4a8eff}
+.btn.gold{background:linear-gradient(90deg,#ffce4a,#ff9a1f);color:#3a1a00;box-shadow:0 0 22px rgba(255,206,74,.6)}
+.btn.gold:hover{background:linear-gradient(90deg,#ffd66a,#ffb03f)}
+.btn.green{background:#00a86b;box-shadow:0 0 20px rgba(0,168,107,.5)}
+.btn.green:hover{background:#00c97f}
+.btn.red{background:#d63a3a;box-shadow:0 0 20px rgba(214,58,58,.5)}
+.btn.red:hover{background:#ee4a4a}
+
+.check-code{
+  font-family:Consolas,monospace;font-size:16px;letter-spacing:1px;
+  background:#0d1629;border:1px solid #1e3a6b;border-radius:12px;
+  padding:14px;color:#9ec5ff;text-align:center;font-weight:700;
+}
+.result{margin-top:16px;padding:16px;border-radius:16px;font-size:13px;line-height:1.6}
+.result.ok{background:rgba(0,168,107,.12);border:1px solid rgba(0,168,107,.5)}
+.result.bad{background:rgba(214,58,58,.12);border:1px solid rgba(214,58,58,.5)}
+.result .row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,.08)}
+.result .row:last-child{border-bottom:none}
+.result .row .k{color:#8aa6c8}
+.result .row .v{color:#fff;font-weight:800;text-align:right}
+.result .title{font-size:15px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+
+.promo-item{display:flex;justify-content:space-between;align-items:center;padding:12px;background:#0d1629;border:1px solid rgba(30,80,180,.25);border-radius:12px;margin-bottom:8px;font-size:13px}
+.promo-item .l{display:flex;flex-direction:column;gap:3px}
+.promo-item .c{font-family:Consolas,monospace;font-weight:800;color:#ffce4a;font-size:14px}
+.promo-item .n{font-size:11px;color:#7a93b8}
+.promo-item .coins{background:linear-gradient(90deg,#ffce4a,#ff9a1f);color:#3a1a00;padding:4px 10px;border-radius:40px;font-weight:900;font-size:12px;box-shadow:0 0 12px rgba(255,206,74,.5)}
+
+.log-item{display:flex;flex-direction:column;gap:4px;padding:10px 12px;background:#0d1629;border:1px solid rgba(30,80,180,.25);border-radius:12px;margin-bottom:6px;font-size:12px}
+.log-item .t{color:#8aa6c8;font-size:11px}
+.log-item .m{color:#e0ecff;font-weight:600}
+
+.section-ttl{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:#4a6fa5;font-weight:800;margin:20px 0 12px}
+.section-ttl:first-child{margin-top:0}
+.hint{font-size:12px;color:#5e7ba5;line-height:1.5;margin-top:8px}
+.code-box{background:#0d1629;border:1px solid #1e3a6b;border-radius:14px;padding:14px;font-family:Consolas,monospace;font-size:11px;color:#9ec5ff;max-height:250px;overflow-y:auto;white-space:pre-wrap;word-break:break-all;margin-bottom:12px}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#2e7eff;color:#fff;padding:12px 24px;border-radius:40px;font-weight:800;font-size:13px;box-shadow:0 0 30px rgba(46,126,255,.8);opacity:0;transition:.3s;pointer-events:none;z-index:999}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.toast.gold{background:linear-gradient(90deg,#ffce4a,#ff9a1f);color:#3a1a00}
+.toast.red{background:#d63a3a}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1>Zero <span>Shop</span> · Панель менеджера</h1>
+    <div class="tag" id="secretTag">🔐 Секрет загружен</div>
+  </div>
+
+  <div class="layout">
+    <div class="panel">
+      <h2>🔍 Проверка кода заказа</h2>
+      <div class="fg">
+        <label>Вставь код из сообщения клиента</label>
+        <input type="text" id="codeInput" placeholder="ZR-1731000000000-7f3a9c1e2d4b8f1a-500" style="font-family:Consolas,monospace;text-align:center;letter-spacing:1px;font-size:14px">
+      </div>
+      <button class="btn" id="checkBtn">Проверить код</button>
+      <div id="checkResult"></div>
+
+      <div class="section-ttl">Ручной ввод (если клиент прислал транзакцию целиком)</div>
+      <div class="fg">
+        <textarea id="rawInput" placeholder='{"zc":500,"total":2250,"ids":["id1","id2"],"userId":"123","ts":1731000000000,"sig":"7f3a9c1e..."}'></textarea>
+      </div>
+      <button class="btn green" id="rawBtn">Проверить вручную</button>
+
+      <div class="section-ttl">Журнал проверок</div>
+      <div id="logList"></div>
+      <button class="btn red" id="clearLogBtn" style="margin-top:10px">Очистить журнал</button>
+    </div>
+
+    <div class="panel">
+      <h2>🎟️ Генератор промокодов</h2>
+      <div class="fg">
+        <label>Код (заглавные буквы, цифры)</label>
+        <input type="text" id="genCode" placeholder="SUMMER100" style="text-transform:uppercase;font-family:Consolas,monospace;letter-spacing:2px;font-weight:800">
+      </div>
+      <div class="fg">
+        <label>Сколько Zero Coins начислить</label>
+        <input type="number" id="genCoins" min="1" max="10000" placeholder="100" value="100">
+      </div>
+      <div class="fg">
+        <label>Лимит активаций (по умолчанию 1)</label>
+        <input type="number" id="genLimit" min="1" max="9999" value="1">
+      </div>
+      <div class="fg">
+        <label>Действует до (YYYY-MM-DD, пусто = бессрочно)</label>
+        <input type="text" id="genUntil" placeholder="2026-12-31">
+      </div>
+      <div class="fg">
+        <label>Заметка (что увидит клиент)</label>
+        <input type="text" id="genNote" placeholder="Приветственный бонус">
+      </div>
+      <button class="btn gold" id="genBtn">➕ Добавить в список</button>
+      <button class="btn green" id="genDownloadBtn">⬇️ Скачать promocodes.js</button>
+
+      <div class="section-ttl">Текущие промокоды</div>
+      <div id="promoList"></div>
+
+      <div class="section-ttl">Импорт существующих</div>
+      <div class="fg">
+        <textarea id="importPromo" placeholder='Вставь содержимое promocodes.js сюда, чтобы отредактировать'></textarea>
+      </div>
+      <button class="btn" id="importBtn">Загрузить из текста</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================== КОНФИГ ================== */
+/* ВАЖНО: тот же секрет, что в index.html. Если поменяешь — поменяй и там! */
+const COIN_SECRET = 'zs_2025_x9f3_' + 'a7b1c4e8';
+
+/* ================== УТИЛИТЫ ================== */
+const $ = id => document.getElementById(id);
+const esc = s => String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+const fmt = n => Number(n).toLocaleString('ru-RU');
+
+function toast(m, cls=''){const t=$('toast');t.className='toast '+cls;t.textContent=m;t.classList.add('show');clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove('show'),2000)}
+
+async function sha256Hex(str){
+  const enc = new TextEncoder().encode(str);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+async function signOrder({ zc, total, items, userId, ts }){
+  const data = JSON.stringify({ zc, total, ids: items, userId, ts });
+  const hash = await sha256Hex(data + '|' + COIN_SECRET);
+  return hash.slice(0, 16);
+}
+function parseOrderCode(code){
+  const m = String(code||'').trim().match(/^ZR-(\d+)-([a-f0-9]{16})-(\d+)$/i);
+  if(!m) return null;
+  return { ts: +m[1], sig: m[2].toLowerCase(), zc: +m[3] };
+}
+
+/* ================== ПРОВЕРКА ================== */
+let log = JSON.parse(localStorage.getItem('zero_manager_log') || '[]');
+
+function renderLog(){
+  const el = $('logList');
+  if(!log.length){el.innerHTML='<div class="hint">Пока пусто</div>';return}
+  el.innerHTML = log.slice(0,50).map(l=>{
+    const date = new Date(l.ts).toLocaleString('ru-RU');
+    return `<div class="log-item"><div class="t">${date}</div><div class="m">${esc(l.msg)}</div></div>`;
+  }).join('');
+}
+function addLog(msg){
+  log.unshift({ ts: Date.now(), msg });
+  if(log.length > 200) log = log.slice(0,200);
+  localStorage.setItem('zero_manager_log', JSON.stringify(log));
+  renderLog();
+}
+
+async function checkCode(){
+  const raw = $('codeInput').value.trim();
+  const el = $('checkResult');
+  if(!raw){toast('Введи код','red');return}
+  const parsed = parseOrderCode(raw);
+  if(!parsed){
+    el.innerHTML = '<div class="result bad"><div class="title">❌ Формат не распознан</div><div>Код должен быть вида <b>ZR-&lt;ts&gt;-&lt;sig&gt;-&lt;zc&gt;</b></div></div>';
+    addLog('❌ Неверный формат кода: ' + raw);
+    return;
+  }
+  // мы не знаем items/userId, но знаем zc/ts/sig — этого недостаточно для полной проверки,
+  // поэтому просим менеджера вставить полный JSON, если нужна абсолютная валидация.
+  const ageHours = (Date.now() - parsed.ts) / 3600000;
+  const expired = ageHours > 48;
+
+  el.innerHTML = `
+    <div class="result ${expired?'bad':'ok'}">
+      <div class="title">${expired?'⚠️ Код просрочен':'✅ Код распознан'}</div>
+      <div class="row"><span class="k">Списано ZC</span><span class="v">${fmt(parsed.zc)}</span></div>
+      <div class="row"><span class="k">Время создания</span><span class="v">${new Date(parsed.ts).toLocaleString('ru-RU')}</span></div>
+      <div class="row"><span class="k">Возраст</span><span class="v">${ageHours.toFixed(1)} ч</span></div>
+      <div class="row"><span class="k">Подпись</span><span class="v" style="font-family:Consolas,monospace;font-size:11px">${parsed.sig}</span></div>
+      <div class="hint" style="margin-top:10px">Для полной проверки (сумма заказа, состав) попроси клиента прислать полный JSON через «Ручной ввод».</div>
+    </div>`;
+  addLog((expired?'⚠️':'✅')+' Проверка ' + raw + ' — списано ' + parsed.zc + ' ZC');
+}
+
+async function checkRaw(){
+  const raw = $('rawInput').value.trim();
+  const el = $('checkResult');
+  if(!raw){toast('Вставь JSON','red');return}
+  let data;
+  try { data = JSON.parse(raw); }
+  catch(e){
+    el.innerHTML = '<div class="result bad"><div class="title">❌ Невалидный JSON</div><div>' + esc(e.message) + '</div></div>';
+    return;
+  }
+  const { zc, total, ids, userId, ts, sig } = data;
+  if(!zc || !total || !ids || !userId || !ts || !sig){
+    el.innerHTML = '<div class="result bad"><div class="title">❌ Не все поля</div><div>Нужны: zc, total, ids, userId, ts, sig</div></div>';
+    return;
+  }
+  const expect = await signOrder({ zc, total, items: ids, userId, ts });
+  const valid = expect === sig;
+  const ageHours = (Date.now() - ts) / 3600000;
+  const expired = ageHours > 48;
+  el.innerHTML = `
+    <div class="result ${valid && !expired ? 'ok' : 'bad'}">
+      <div class="title">${valid && !expired ? '✅ Подпись валидна' : valid ? '⚠️ Просрочен' : '❌ Подпись не сходится'}</div>
+      <div class="row"><span class="k">Списано ZC</span><span class="v">${fmt(zc)}</span></div>
+      <div class="row"><span class="k">Сумма заказа</span><span class="v">${fmt(total)} ₽</span></div>
+      <div class="row"><span class="k">К оплате</span><span class="v">${fmt(Math.max(0, total - zc))} ₽</span></div>
+      <div class="row"><span class="k">ID пользователя</span><span class="v">${esc(userId)}</span></div>
+      <div class="row"><span class="k">Позиций</span><span class="v">${ids.length}</span></div>
+      <div class="row"><span class="k">Время</span><span class="v">${new Date(ts).toLocaleString('ru-RU')}</span></div>
+      <div class="row"><span class="k">Ожидаемая подпись</span><span class="v" style="font-family:Consolas,monospace;font-size:11px">${expect}</span></div>
+      <div class="row"><span class="k">Подпись клиента</span><span class="v" style="font-family:Consolas,monospace;font-size:11px">${sig}</span></div>
+    </div>`;
+  addLog((valid&&!expired?'✅':'❌')+' Полная проверка · ZC=' + zc + ' · сумма=' + total);
+}
+
+/* ================== ПРОМОКОДЫ ================== */
+let promos = {};
+
+function renderPromos(){
+  const el = $('promoList');
+  const keys = Object.keys(promos);
+  if(!keys.length){el.innerHTML='<div class="hint">Пока нет промокодов. Создай первый выше.</div>';return}
+  el.innerHTML = keys.map(code=>{
+    const p = promos[code];
+    return `
+      <div class="promo-item">
+        <div class="l">
+          <div class="c">${esc(code)}</div>
+          <div class="n">${p.limit?('Лимит: '+p.limit):'Без лимита'}${p.until?(' · до '+p.until):''}${p.note?(' · '+esc(p.note)):''}</div>
+        </div>
+        <div class="coins">+${p.coins} ZC</div>
+        <button style="background:transparent;border:none;color:#ff6b6b;cursor:pointer;font-size:16px;margin-left:8px" data-del="${esc(code)}">✕</button>
+      </div>`;
+  }).join('');
+  el.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{
+    delete promos[b.dataset.del];
+    renderPromos();
+    toast('🗑 Удалён','red');
+  });
+}
+
+function genPromo(){
+  const code = $('genCode').value.trim().toUpperCase();
+  const coins = +$('genCoins').value;
+  const limit = +$('genLimit').value || 1;
+  const until = $('genUntil').value.trim();
+  const note = $('genNote').value.trim();
+  if(!code || !/^[A-Z0-9_]{3,24}$/.test(code)) return toast('Код: 3-24 символа A-Z, 0-9, _','red');
+  if(!coins || coins < 1) return toast('Нужно минимум 1 ZC','red');
+  if(promos[code]) return toast('Такой код уже есть','red');
+  const item = { coins, limit };
+  if(until) item.until = until;
+  if(note) item.note = note;
+  promos[code] = item;
+  renderPromos();
+  toast('✅ Промокод добавлен','gold');
+  $('genCode').value = ''; $('genNote').value='';
+}
+
+function downloadPromos(){
+  const content = '// Zero Shop — список промокодов\nwindow.PROMOCODES = ' + JSON.stringify(promos, null, 2) + ';\n';
+  const blob = new Blob([content], {type:'text/javascript'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'promocodes.js';
+  a.click();
+  toast('⬇️ Скачано');
+}
+
+function importPromos(){
+  const txt = $('importPromo').value.trim();
+  if(!txt) return toast('Вставь текст','red');
+  const m = txt.match(/PROMOCODES\s*=\s*({[\s\S]*?});/);
+  if(!m) return toast('Не найден объект PROMOCODES','red');
+  try {
+    promos = JSON.parse(m[1]);
+    renderPromos();
+    toast('✅ Импортировано','gold');
+  } catch(e){ toast('Ошибка парсинга JSON','red'); }
+}
+
+/* ================== СТАРТ ================== */
+$('checkBtn').onclick = checkCode;
+$('rawBtn').onclick = checkRaw;
+$('genBtn').onclick = genPromo;
+$('genDownloadBtn').onclick = downloadPromos;
+$('importBtn').onclick = importPromos;
+$('clearLogBtn').onclick = () => {
+  if(!confirm('Очистить журнал проверок?')) return;
+  log = [];
+  localStorage.setItem('zero_manager_log','[]');
+  renderLog();
+  toast('🗑 Журнал очищен','red');
+};
+
+renderLog();
+renderPromos();
+</script>
+</body>
+</html>

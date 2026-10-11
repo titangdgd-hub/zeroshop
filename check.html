@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Zero Shop · Проверка кода</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#050a14;color:#e0ecff;font-family:-apple-system,'Segoe UI',Roboto,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.box{width:100%;max-width:460px;background:#08101f;border:1px solid rgba(0,120,255,.4);border-radius:24px;padding:26px;box-shadow:0 20px 60px rgba(0,0,0,.9)}
+h1{font-size:22px;font-weight:800;color:#fff;margin-bottom:6px}
+h1 span{color:#2e7eff}
+.sub{font-size:12px;color:#7a93b8;margin-bottom:20px}
+input{width:100%;background:#0d1629;border:1px solid #1e3a6b;border-radius:12px;padding:14px;color:#e0ecff;font-size:14px;font-family:Consolas,monospace;text-align:center;letter-spacing:1px;outline:none;margin-bottom:12px}
+input:focus{border-color:#2e7eff}
+button{width:100%;background:#2e7eff;color:#fff;border:none;border-radius:40px;padding:14px;font-size:14px;font-weight:800;cursor:pointer;box-shadow:0 0 24px rgba(46,126,255,.6);font-family:inherit}
+button:hover{background:#4a8eff}
+.result{margin-top:16px;padding:16px;border-radius:16px;font-size:13px;line-height:1.6}
+.result.ok{background:rgba(0,168,107,.12);border:1px solid rgba(0,168,107,.5)}
+.result.bad{background:rgba(214,58,58,.12);border:1px solid rgba(214,58,58,.5)}
+.result .row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,.08)}
+.result .row:last-child{border-bottom:none}
+.result .row .k{color:#8aa6c8}
+.result .row .v{color:#fff;font-weight:800;text-align:right}
+.result .title{font-size:15px;font-weight:800;margin-bottom:10px}
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>Zero <span>Shop</span></h1>
+  <div class="sub">Проверка кода заказа</div>
+  <input type="text" id="code" placeholder="ZR-...">
+  <button onclick="check()">Проверить</button>
+  <div id="res"></div>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+const fmt = n => Number(n).toLocaleString('ru-RU');
+
+function parse(code){
+  const m = String(code||'').trim().match(/^ZR-(\d+)-([a-f0-9]{16})-(\d+)$/i);
+  if(!m) return null;
+  return { ts: +m[1], sig: m[2].toLowerCase(), zc: +m[3] };
+}
+
+function check(){
+  const raw = $('code').value.trim();
+  const el = $('res');
+  const p = parse(raw);
+  if(!p){
+    el.innerHTML = '<div class="result bad"><div class="title">❌ Формат не распознан</div><div>Код должен быть вида ZR-&lt;ts&gt;-&lt;sig&gt;-&lt;zc&gt;</div></div>';
+    return;
+  }
+  const ageHours = (Date.now() - p.ts) / 3600000;
+  const expired = ageHours > 48;
+  el.innerHTML = `
+    <div class="result ${expired?'bad':'ok'}">
+      <div class="title">${expired?'⚠️ Код просрочен':'✅ Код распознан'}</div>
+      <div class="row"><span class="k">Списано ZC</span><span class="v">${fmt(p.zc)}</span></div>
+      <div class="row"><span class="k">Создан</span><span class="v">${new Date(p.ts).toLocaleString('ru-RU')}</span></div>
+      <div class="row"><span class="k">Возраст</span><span class="v">${ageHours.toFixed(1)} ч</span></div>
+      <div class="row"><span class="k">Подпись</span><span class="v" style="font-family:Consolas,monospace;font-size:11px">${esc(p.sig)}</span></div>
+    </div>`;
+}
+</script>
+</body>
+</html>
