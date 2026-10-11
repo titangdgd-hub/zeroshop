@@ -8,9 +8,8 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{
-  background:#050a14;
-  font-family:-apple-system,'Segoe UI',Roboto,sans-serif;
-  color:#e0ecff;padding:16px;min-height:100vh;position:relative;overflow-x:hidden;
+  background:#050a14;font-family:-apple-system,'Segoe UI',Roboto,sans-serif;color:#e0ecff;
+  padding:16px;min-height:100vh;position:relative;overflow-x:hidden;
 }
 body::before{
   content:'';position:fixed;inset:-30%;
@@ -21,11 +20,7 @@ body::before{
   animation:bgMove 22s ease-in-out infinite alternate;
   pointer-events:none;z-index:0;
 }
-@keyframes bgMove{
-  0%{transform:translate(0,0) scale(1)}
-  50%{transform:translate(3%,-3%) scale(1.05)}
-  100%{transform:translate(-3%,3%) scale(1)}
-}
+@keyframes bgMove{0%{transform:translate(0,0) scale(1)}50%{transform:translate(3%,-3%) scale(1.05)}100%{transform:translate(-3%,3%) scale(1)}}
 .app{position:relative;z-index:1;max-width:480px;margin:0 auto;background:#08101f;border-radius:24px;padding:20px;border:1px solid rgba(0,120,255,.35);box-shadow:0 20px 40px rgba(0,0,0,.9)}
 .head-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:4px}
 h1{font-size:24px;font-weight:800;color:#fff}
@@ -34,11 +29,42 @@ h1 span{color:#2e7eff;text-shadow:0 0 20px rgba(46,126,255,.6)}
   width:38px;height:38px;border-radius:12px;
   background:#0d1629;border:1px solid rgba(46,126,255,.5);
   color:#2e7eff;font-size:18px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  transition:.2s;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;transition:.2s;flex-shrink:0;
 }
 .tg-mini:hover{background:rgba(46,126,255,.15);transform:translateY(-1px)}
-.sub{font-size:13px;color:#7a93b8;margin-bottom:18px}
+.sub{font-size:13px;color:#7a93b8;margin-bottom:14px}
+
+/* Плашка баланса */
+.balance-card{
+  position:relative;overflow:hidden;cursor:pointer;
+  display:flex;align-items:center;gap:14px;
+  padding:14px 16px;margin-bottom:16px;
+  background:radial-gradient(circle at 15% 20%, rgba(255,206,74,.28), transparent 55%),linear-gradient(135deg,#1a1305,#0a1730 70%);
+  border:1px solid rgba(255,206,74,.55);border-radius:18px;
+  box-shadow:0 0 24px rgba(255,206,74,.22);
+  transition:.2s;
+}
+.balance-card:hover{transform:translateY(-2px);box-shadow:0 0 30px rgba(255,206,74,.4)}
+.balance-card::after{
+  content:'';position:absolute;inset:-1px;
+  background:linear-gradient(115deg,transparent 30%,rgba(255,220,142,.28) 50%,transparent 70%);
+  animation:co-shine 6s linear infinite;pointer-events:none;
+}
+@keyframes co-shine{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.balance-card .ic{
+  width:42px;height:42px;border-radius:12px;
+  background:radial-gradient(circle at 40% 35%,rgba(255,206,74,.5),rgba(255,206,74,.15));
+  border:1px solid rgba(255,206,74,.7);
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+  box-shadow:0 0 16px rgba(255,206,74,.5);flex-shrink:0;
+}
+.balance-card .txt{flex:1;min-width:0;position:relative;z-index:1}
+.balance-card .lbl{font-size:10px;color:#ffce4a;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;margin-bottom:2px}
+.balance-card .val{font-size:22px;font-weight:900;color:#fff;line-height:1.1;text-shadow:0 0 14px rgba(255,206,74,.5)}
+.balance-card .val small{font-size:12px;color:#ffce4a;font-weight:800;margin-left:4px}
+.balance-card .rub{font-size:11px;color:#a89060;margin-top:2px}
+.balance-card .chev{color:#ffce4a;font-size:20px;font-weight:800;flex-shrink:0}
+
 .cats{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;scrollbar-width:none}
 .cats::-webkit-scrollbar{height:0}
 .cat{flex-shrink:0;padding:8px 16px;background:#0d1629;border:1px solid #1e3a6b;border-radius:40px;color:#6b8cff;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
@@ -46,60 +72,26 @@ h1 span{color:#2e7eff;text-shadow:0 0 20px rgba(46,126,255,.6)}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
 .card{
   position:relative;overflow:hidden;background:#0d1629;border-radius:18px;padding:12px;
-  border:1px solid rgba(30,80,180,.25);cursor:pointer;display:flex;flex-direction:column;gap:8px;transition:.25s;
-  animation:cardIn .4s ease both;
+  border:1px solid rgba(30,80,180,.25);cursor:pointer;display:flex;flex-direction:column;gap:8px;
+  transition:.25s;animation:cardIn .4s ease both;
 }
-@keyframes cardIn{
-  from{opacity:0;transform:translateY(10px) scale(.97)}
-  to{opacity:1;transform:translateY(0) scale(1)}
-}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
 .card:hover{border-color:rgba(46,126,255,.7);transform:translateY(-2px)}
 .card.soon{border-color:rgba(255,209,102,.35)}
 .card.soon .card-img{filter:saturate(.6) brightness(.85)}
 .card.soon .plus{opacity:.35;pointer-events:none;border-color:#4a6fa5;color:#4a6fa5;background:#0d1629}
 .card-img{height:110px;background:linear-gradient(135deg,#0b1a31,#14274a);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:40px;border:1px solid #1e3a6b;overflow:hidden;position:relative}
 .card-img img{width:100%;height:100%;object-fit:cover}
-
-/* скелетоны */
 .skel{background:#0d1629;border-radius:18px;padding:12px;border:1px solid rgba(30,80,180,.15);display:flex;flex-direction:column;gap:8px}
 .skel > div{background:linear-gradient(90deg,#0d1629 0%,#13203a 50%,#0d1629 100%);background-size:200% 100%;animation:sk 1.4s infinite;border-radius:10px}
-.skel .s-img{height:110px}
-.skel .s-line{height:10px;width:60%}
-.skel .s-line.b{width:85%}
-.skel .s-line.c{width:45%;height:14px}
+.skel .s-img{height:110px}.skel .s-line{height:10px;width:60%}.skel .s-line.b{width:85%}.skel .s-line.c{width:45%;height:14px}
 @keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
-/* лента СКОРО */
-.ribbon{
-  position:absolute;top:14px;right:-38px;
-  transform:rotate(45deg);
-  background:linear-gradient(90deg,#2e7eff,#00c2ff);
-  color:#fff;font-size:10px;font-weight:800;letter-spacing:2px;
-  padding:5px 44px;
-  box-shadow:0 0 18px rgba(46,126,255,.9), 0 0 40px rgba(46,126,255,.35);
-  border-top:1px solid rgba(255,255,255,.35);
-  border-bottom:1px solid rgba(0,0,0,.25);
-  z-index:3;pointer-events:none;text-transform:uppercase;overflow:hidden;
-}
-.ribbon::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);
-  animation:shine 2.6s infinite;
-}
+.ribbon{position:absolute;top:14px;right:-38px;transform:rotate(45deg);background:linear-gradient(90deg,#2e7eff,#00c2ff);color:#fff;font-size:10px;font-weight:800;letter-spacing:2px;padding:5px 44px;box-shadow:0 0 18px rgba(46,126,255,.9), 0 0 40px rgba(46,126,255,.35);border-top:1px solid rgba(255,255,255,.35);border-bottom:1px solid rgba(0,0,0,.25);z-index:3;pointer-events:none;text-transform:uppercase;overflow:hidden}
+.ribbon::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);animation:shine 2.6s infinite}
 @keyframes shine{0%{transform:translateX(-120%)}60%{transform:translateX(120%)}100%{transform:translateX(120%)}}
-
-/* сердечко избранного */
-.fav{
-  position:absolute;top:8px;left:8px;z-index:4;
-  width:30px;height:30px;border-radius:50%;
-  background:rgba(5,10,20,.75);border:1px solid rgba(255,255,255,.12);
-  color:#7a93b8;font-size:15px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  transition:.2s;backdrop-filter:blur(4px);
-}
+.fav{position:absolute;top:8px;left:8px;z-index:4;width:30px;height:30px;border-radius:50%;background:rgba(5,10,20,.75);border:1px solid rgba(255,255,255,.12);color:#7a93b8;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;backdrop-filter:blur(4px)}
 .fav:hover{transform:scale(1.1);color:#ff6b8b}
 .fav.on{color:#ff4d6d;border-color:rgba(255,77,109,.6);background:rgba(255,77,109,.15);box-shadow:0 0 12px rgba(255,77,109,.55)}
-
 .brand{font-size:9px;font-weight:700;color:#2e7eff;text-transform:uppercase;letter-spacing:1px}
 .name{font-size:13px;font-weight:600;color:#e0ecff;line-height:1.3;min-height:34px}
 .bottom{display:flex;justify-content:space-between;align-items:center;margin-top:auto}
@@ -110,65 +102,24 @@ h1 span{color:#2e7eff;text-shadow:0 0 20px rgba(46,126,255,.6)}
 .plus.bump{animation:bump .35s ease}
 @keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.35)}100%{transform:scale(1)}}
 .empty{grid-column:span 2;text-align:center;padding:40px;color:#3f5e8a}
-
-/* плашка "Под заказ" */
-.custom-order{
-  position:relative;overflow:hidden;
-  display:flex;align-items:center;gap:14px;
-  padding:16px 18px;margin-bottom:18px;
-  background:linear-gradient(135deg,#0d1d3a 0%,#0b1630 60%,#0d1d3a 100%);
-  border:1px solid rgba(46,126,255,.45);border-radius:18px;
-  box-shadow:0 0 24px rgba(46,126,255,.25), inset 0 0 30px rgba(46,126,255,.06);
-}
-.custom-order::before{
-  content:'';position:absolute;inset:-1px;
-  background:linear-gradient(115deg,transparent 30%,rgba(46,126,255,.35) 50%,transparent 70%);
-  animation:co-shine 5s linear infinite;pointer-events:none;
-}
-@keyframes co-shine{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-.custom-order .ico{
-  flex-shrink:0;width:46px;height:46px;border-radius:14px;
-  background:radial-gradient(circle at 40% 35%,rgba(46,126,255,.5),rgba(46,126,255,.12));
-  border:1px solid rgba(46,126,255,.6);
-  display:flex;align-items:center;justify-content:center;font-size:22px;
-  box-shadow:0 0 20px rgba(46,126,255,.4);
-}
+.custom-order{position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;padding:16px 18px;margin-bottom:16px;background:linear-gradient(135deg,#0d1d3a 0%,#0b1630 60%,#0d1d3a 100%);border:1px solid rgba(46,126,255,.45);border-radius:18px;box-shadow:0 0 24px rgba(46,126,255,.25), inset 0 0 30px rgba(46,126,255,.06)}
+.custom-order::before{content:'';position:absolute;inset:-1px;background:linear-gradient(115deg,transparent 30%,rgba(46,126,255,.35) 50%,transparent 70%);animation:co-shine 5s linear infinite;pointer-events:none}
+.custom-order .ico{flex-shrink:0;width:46px;height:46px;border-radius:14px;background:radial-gradient(circle at 40% 35%,rgba(46,126,255,.5),rgba(46,126,255,.12));border:1px solid rgba(46,126,255,.6);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 0 20px rgba(46,126,255,.4)}
 .custom-order .txt{flex:1;min-width:0}
 .custom-order .ttl{font-size:14px;font-weight:800;color:#fff;margin-bottom:3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.custom-order .ttl span{
-  font-size:10px;font-weight:800;letter-spacing:1.5px;
-  background:linear-gradient(90deg,#2e7eff,#00c2ff);
-  color:#fff;padding:3px 8px;border-radius:40px;text-transform:uppercase;
-  box-shadow:0 0 12px rgba(46,126,255,.7);
-}
+.custom-order .ttl span{font-size:10px;font-weight:800;letter-spacing:1.5px;background:linear-gradient(90deg,#2e7eff,#00c2ff);color:#fff;padding:3px 8px;border-radius:40px;text-transform:uppercase;box-shadow:0 0 12px rgba(46,126,255,.7)}
 .custom-order .dsc{font-size:12px;color:#8aa6c8;line-height:1.4}
-.custom-order .go{
-  flex-shrink:0;background:#2e7eff;color:#fff;border:none;border-radius:40px;
-  padding:10px 16px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;
-  box-shadow:0 0 20px rgba(46,126,255,.55);transition:.2s;white-space:nowrap;
-}
+.custom-order .go{flex-shrink:0;background:#2e7eff;color:#fff;border:none;border-radius:40px;padding:10px 16px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 0 20px rgba(46,126,255,.55);transition:.2s;white-space:nowrap}
 .custom-order .go:hover{background:#4a8eff;transform:translateY(-1px)}
-@media(max-width:400px){
-  .custom-order{padding:14px;gap:10px}
-  .custom-order .ico{width:40px;height:40px;font-size:18px}
-  .custom-order .ttl{font-size:13px}
-  .custom-order .dsc{font-size:11px}
-  .custom-order .go{padding:9px 12px;font-size:11px}
-}
-
+@media(max-width:400px){.custom-order{padding:14px;gap:10px}.custom-order .ico{width:40px;height:40px;font-size:18px}.custom-order .ttl{font-size:13px}.custom-order .dsc{font-size:11px}.custom-order .go{padding:9px 12px;font-size:11px}}
 .nav{display:flex;justify-content:space-around;padding-top:14px;border-top:1px solid rgba(0,120,255,.2);margin-top:20px}
 .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;color:#3f5e8a;font-size:11px;font-weight:600;cursor:pointer;padding:6px 14px;border-radius:40px;position:relative;transition:.2s}
 .nav-item.active{color:#2e7eff;background:rgba(46,126,255,.1)}
 .nav-item span:first-child{font-size:20px}
-.badge{
-  position:absolute;top:0;right:2px;background:#2e7eff;color:#fff;font-size:10px;font-weight:800;
-  min-width:18px;height:18px;padding:0 4px;border-radius:10px;
-  display:flex;align-items:center;justify-content:center;border:1px solid #08101f;transition:.2s;
-}
+.badge{position:absolute;top:0;right:2px;background:#2e7eff;color:#fff;font-size:10px;font-weight:800;min-width:18px;height:18px;padding:0 4px;border-radius:10px;display:flex;align-items:center;justify-content:center;border:1px solid #08101f;transition:.2s}
 .badge.heart{background:#ff4d6d;box-shadow:0 0 12px rgba(255,77,109,.7)}
 .badge.pop{animation:bpop .4s ease}
 @keyframes bpop{0%{transform:scale(1)}45%{transform:scale(1.5)}100%{transform:scale(1)}}
-
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;padding:20px;z-index:100;opacity:0;pointer-events:none;transition:.25s}
 .overlay.active{opacity:1;pointer-events:auto}
 .modal{background:#08101f;border:1px solid rgba(46,126,255,.5);border-radius:24px;padding:22px;width:100%;max-width:420px;max-height:90vh;overflow-y:auto;position:relative;transform:scale(.95);transition:.25s}
@@ -182,12 +133,14 @@ h1 span{color:#2e7eff;text-shadow:0 0 20px rgba(46,126,255,.6)}
 .m-desc{font-size:14px;color:#8aa6c8;line-height:1.5;margin-bottom:18px}
 .m-price{font-size:26px;font-weight:800;color:#2e7eff;margin-bottom:18px}
 .m-price small{font-size:14px;color:#4a6fa5}
-.m-soon{display:inline-block;background:linear-gradient(90deg,#2e7eff,#00c2ff);color:#fff;font-size:11px;font-weight:800;letter-spacing:2px;padding:6px 14px;border-radius:40px;margin-bottom:14px;box-shadow:0 0 18px rgba(46,126,255,.7);text-transform:uppercase;}
+.m-soon{display:inline-block;background:linear-gradient(90deg,#2e7eff,#00c2ff);color:#fff;font-size:11px;font-weight:800;letter-spacing:2px;padding:6px 14px;border-radius:40px;margin-bottom:14px;box-shadow:0 0 18px rgba(46,126,255,.7);text-transform:uppercase}
 .m-soon-date{font-size:12px;color:#8aa6c8;margin:-8px 0 16px}
 .btn{width:100%;background:#2e7eff;color:#fff;border:none;border-radius:40px;padding:15px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 0 24px rgba(46,126,255,.6);font-family:inherit}
 .btn:hover{background:#4a8eff}
 .btn[disabled]{opacity:.55;cursor:not-allowed;box-shadow:none;background:#1e3a6b}
-.cart-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;max-height:45vh;overflow-y:auto}
+.btn.gold{background:linear-gradient(90deg,#ffce4a,#ff9a1f);color:#3a1a00;box-shadow:0 0 22px rgba(255,206,74,.5)}
+.btn.gold:hover{background:linear-gradient(90deg,#ffd66a,#ffb03f)}
+.cart-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;max-height:38vh;overflow-y:auto}
 .cart-item{display:flex;gap:12px;align-items:center;padding:12px;background:#0d1629;border:1px solid rgba(30,80,180,.25);border-radius:14px}
 .cart-item img,.no-img{width:50px;height:50px;border-radius:12px;object-fit:cover;background:#0b1a31;border:1px solid #1e3a6b;flex-shrink:0}
 .no-img{display:flex;align-items:center;justify-content:center;font-size:22px}
@@ -199,43 +152,89 @@ h1 span{color:#2e7eff;text-shadow:0 0 20px rgba(46,126,255,.6)}
 .qbtn:hover{background:#2e7eff;color:#fff}
 .qnum{font-size:14px;font-weight:700;color:#fff;min-width:18px;text-align:center}
 .rm{background:transparent;border:none;color:#ff6b6b;font-size:16px;cursor:pointer;padding:4px;margin-left:4px}
-.total{display:flex;justify-content:space-between;align-items:center;padding:16px;background:#0d1629;border:1px solid rgba(46,126,255,.4);border-radius:16px;margin-bottom:14px}
-.total .l{font-size:13px;color:#7a93b8;font-weight:600;text-transform:uppercase;letter-spacing:1px}
-.total .v{font-size:22px;font-weight:800;color:#2e7eff}
+.total{display:flex;justify-content:space-between;align-items:center;padding:14px;background:#0d1629;border:1px solid rgba(46,126,255,.4);border-radius:16px;margin-bottom:10px}
+.total .l{font-size:12px;color:#7a93b8;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.total .v{font-size:20px;font-weight:800;color:#2e7eff}
 
+/* Блок списания ZC в корзине */
+.zc-picker{
+  background:linear-gradient(135deg,#1a1305,#0a1730);
+  border:1px solid rgba(255,206,74,.45);border-radius:16px;
+  padding:14px;margin-bottom:12px;
+}
+.zc-picker .top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+.zc-picker .lbl{font-size:11px;color:#ffce4a;text-transform:uppercase;letter-spacing:1.5px;font-weight:800}
+.zc-picker .avail{font-size:12px;color:#d6c08a}
+.zc-picker .avail b{color:#fff;font-weight:900}
+.zc-slider{
+  width:100%;-webkit-appearance:none;appearance:none;
+  height:6px;border-radius:40px;background:#3a2a05;outline:none;margin:6px 0 8px;
+}
+.zc-slider::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;
+  background:linear-gradient(135deg,#ffce4a,#ff9a1f);
+  cursor:pointer;box-shadow:0 0 12px rgba(255,206,74,.9);border:2px solid #fff;
+}
+.zc-slider::-moz-range-thumb{
+  width:22px;height:22px;border-radius:50%;border:2px solid #fff;
+  background:linear-gradient(135deg,#ffce4a,#ff9a1f);cursor:pointer;box-shadow:0 0 12px rgba(255,206,74,.9);
+}
+.zc-btns{display:flex;gap:8px}
+.zc-btns button{
+  flex:1;background:#0d1629;color:#ffce4a;border:1px solid rgba(255,206,74,.45);
+  border-radius:40px;padding:8px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;
+  transition:.2s;
+}
+.zc-btns button:hover{background:rgba(255,206,74,.12)}
+.zc-calc{display:flex;justify-content:space-between;margin-top:10px;font-size:13px}
+.zc-calc .p{color:#ffce4a;font-weight:800}
+
+.final-total{display:flex;justify-content:space-between;align-items:center;padding:16px;background:#0d1629;border:1px solid rgba(46,126,255,.6);border-radius:16px;margin-bottom:14px}
+.final-total .l{font-size:12px;color:#7a93b8;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.final-total .v{font-size:24px;font-weight:900;color:#fff}
+.final-total .v small{font-size:13px;color:#4a6fa5;font-weight:700}
 .cart-empty{text-align:center;padding:40px 20px 30px;display:flex;flex-direction:column;align-items:center;gap:14px}
-.cart-empty .ill{
-  width:120px;height:120px;border-radius:50%;
-  background:radial-gradient(circle at 50% 40%, rgba(46,126,255,.28), rgba(46,126,255,.05) 70%, transparent 75%);
-  display:flex;align-items:center;justify-content:center;font-size:60px;
-  box-shadow:0 0 40px rgba(46,126,255,.25) inset;
-  animation:floaty 3.4s ease-in-out infinite;
-}
-.cart-empty.fav .ill{
-  background:radial-gradient(circle at 50% 40%, rgba(255,77,109,.28), rgba(255,77,109,.05) 70%, transparent 75%);
-  box-shadow:0 0 40px rgba(255,77,109,.25) inset;
-}
+.cart-empty .ill{width:120px;height:120px;border-radius:50%;background:radial-gradient(circle at 50% 40%, rgba(46,126,255,.28), rgba(46,126,255,.05) 70%, transparent 75%);display:flex;align-items:center;justify-content:center;font-size:60px;box-shadow:0 0 40px rgba(46,126,255,.25) inset;animation:floaty 3.4s ease-in-out infinite}
 @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 .cart-empty h3{font-size:17px;font-weight:800;color:#fff;margin:0}
 .cart-empty p{font-size:13px;color:#7a93b8;line-height:1.5;margin:0;max-width:280px}
-.cart-empty .go{
-  margin-top:8px;background:#2e7eff;color:#fff;border:none;border-radius:40px;
-  padding:13px 26px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;
-  box-shadow:0 0 24px rgba(46,126,255,.55);transition:.2s;
-}
+.cart-empty .go{margin-top:8px;background:#2e7eff;color:#fff;border:none;border-radius:40px;padding:13px 26px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 0 24px rgba(46,126,255,.55);transition:.2s}
 .cart-empty .go:hover{background:#4a8eff;transform:translateY(-1px)}
+
+/* Кошелёк-модалка */
+.wallet-hero{
+  position:relative;overflow:hidden;
+  padding:22px;border-radius:20px;margin-bottom:18px;
+  background:radial-gradient(circle at 20% 20%, rgba(255,206,74,.32), transparent 55%),linear-gradient(135deg,#1a1305,#0a1730 70%);
+  border:1px solid rgba(255,206,74,.55);
+  box-shadow:0 0 30px rgba(255,206,74,.28);
+}
+.wallet-hero::after{content:'';position:absolute;inset:-1px;background:linear-gradient(115deg,transparent 30%,rgba(255,220,142,.3) 50%,transparent 70%);animation:co-shine 6s linear infinite;pointer-events:none}
+.wallet-hero .lbl{font-size:11px;color:#ffce4a;text-transform:uppercase;letter-spacing:2px;font-weight:800;margin-bottom:6px;position:relative;z-index:1}
+.wallet-hero .val{font-size:42px;font-weight:900;color:#fff;line-height:1;text-shadow:0 0 24px rgba(255,206,74,.6);position:relative;z-index:1}
+.wallet-hero .val small{font-size:18px;color:#ffce4a;font-weight:800;margin-left:6px}
+.wallet-hero .rate{font-size:12px;color:#a89060;margin-top:10px;position:relative;z-index:1;display:flex;align-items:center;gap:6px}
+.wallet-hero .rate b{color:#ffce4a;font-weight:800}
+.promo-row{display:flex;gap:8px;margin-bottom:14px}
+.promo-row input{flex:1;background:#0d1629;border:1px solid #1e3a6b;border-radius:12px;padding:12px 14px;color:#e0ecff;font-size:14px;font-family:inherit;outline:none;text-transform:uppercase;letter-spacing:1px}
+.promo-row input:focus{border-color:#ffce4a;box-shadow:0 0 0 3px rgba(255,206,74,.15)}
+.promo-row button{background:linear-gradient(90deg,#ffce4a,#ff9a1f);color:#3a1a00;border:none;border-radius:12px;padding:0 20px;font-weight:800;font-size:13px;cursor:pointer;font-family:inherit;box-shadow:0 0 18px rgba(255,206,74,.5)}
+.section-ttl{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:#4a6fa5;font-weight:800;margin:18px 0 10px}
+.history{display:flex;flex-direction:column;gap:8px;max-height:240px;overflow-y:auto;padding-right:4px}
+.history::-webkit-scrollbar{width:5px}.history::-webkit-scrollbar-thumb{background:#1e3a6b;border-radius:3px}
+.h-item{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#0d1629;border:1px solid rgba(30,80,180,.25);border-radius:12px;font-size:12px}
+.h-item .lft{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.h-item .nm{color:#e0ecff;font-weight:700;font-size:13px}
+.h-item .dt{color:#5e7ba5;font-size:11px}
+.h-item .amt{font-weight:800;font-size:14px;flex-shrink:0;margin-left:10px}
+.h-item .amt.plus{color:#33e08a}
+.h-item .amt.minus{color:#ff8b8b}
 
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);background:#2e7eff;color:#fff;padding:12px 24px;border-radius:40px;font-weight:700;font-size:13px;box-shadow:0 0 30px rgba(46,126,255,.8);opacity:0;transition:.3s;pointer-events:none;z-index:2000;white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
-
-/* летящая точка в корзину */
-.fly-dot{
-  position:fixed;width:22px;height:22px;border-radius:50%;
-  background:radial-gradient(circle at 40% 35%,#8ec1ff,#2e7eff);
-  box-shadow:0 0 20px rgba(46,126,255,.9);
-  z-index:9999;pointer-events:none;
-  transition:transform .75s cubic-bezier(.45,.05,.35,1), opacity .75s ease;
-}
+.toast.gold{background:linear-gradient(90deg,#ffce4a,#ff9a1f);color:#3a1a00;box-shadow:0 0 30px rgba(255,181,50,.85)}
+.toast.red{background:#d63a3a;box-shadow:0 0 30px rgba(214,58,58,.85)}
+.fly-dot{position:fixed;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#8ec1ff,#2e7eff);box-shadow:0 0 20px rgba(46,126,255,.9);z-index:9999;pointer-events:none;transition:transform .75s cubic-bezier(.45,.05,.35,1), opacity .75s ease}
 </style>
 </head>
 <body>
@@ -245,6 +244,17 @@ h1 span{color:#2e7eff;text-shadow:0 0 20px rgba(46,126,255,.6)}
     <div class="tg-mini" id="tgBtn" title="Связь с менеджером">✈</div>
   </div>
   <p class="sub">Твой вейп-шоп №1</p>
+
+  <!-- Плашка с балансом -->
+  <div class="balance-card" id="balanceCard">
+    <div class="ic">💰</div>
+    <div class="txt">
+      <div class="lbl">Zero Coins</div>
+      <div class="val" id="bcVal">0<small>ZC</small></div>
+      <div class="rub" id="bcRub">≈ 0 ₽ скидки · нажми, чтобы пополнить</div>
+    </div>
+    <div class="chev">›</div>
+  </div>
 
   <div class="custom-order" id="customOrder">
     <div class="ico">✨</div>
@@ -262,6 +272,29 @@ h1 span{color:#2e7eff;text-shadow:0 0 20px rgba(46,126,255,.6)}
     <div class="nav-item active" id="navHome"><span>⌂</span><span>Главная</span></div>
     <div class="nav-item" id="navFav"><span>❤</span><span>Избранное</span><span class="badge heart" id="favBadge" style="display:none">0</span></div>
     <div class="nav-item" id="navCart"><span>🛒</span><span>Корзина</span><span class="badge" id="badge" style="display:none">0</span></div>
+  </div>
+</div>
+
+<!-- Модалка кошелька -->
+<div class="overlay" id="wm">
+  <div class="modal">
+    <button class="close" onclick="closeWM()">✕</button>
+    <div style="font-size:20px;font-weight:800;color:#fff;margin-bottom:16px">💰 Zero Coins</div>
+
+    <div class="wallet-hero">
+      <div class="lbl">Твой баланс</div>
+      <div class="val" id="wmVal">0<small>ZC</small></div>
+      <div class="rate">Курс: <b>1 ZC = 1 ₽</b></div>
+    </div>
+
+    <div class="section-ttl">Активировать промокод</div>
+    <div class="promo-row">
+      <input type="text" id="promoInput" placeholder="ZERO100" maxlength="24">
+      <button id="promoBtn">Активировать</button>
+    </div>
+
+    <div class="section-ttl">История</div>
+    <div class="history" id="history"></div>
   </div>
 </div>
 
@@ -288,113 +321,176 @@ h1 span{color:#2e7eff;text-shadow:0 0 20px rgba(46,126,255,.6)}
 <div class="toast" id="toast"></div>
 
 <script src="products.js"></script>
+<script src="promocodes.js"></script>
 <script>
+/* ================== КОНФИГ ================== */
+const TG = 'zeromanager';
+const COIN_SECRET = 'zs_2025_x9f3_a7b1c4e8';
+const COIN_RATE = 1;             // 1 ZC = 1 ₽
+const MAX_ZC_PER_ORDER = 500;
+const MAX_BALANCE = 10000;
+const ALLOW_PARTIAL = true;
+
+/* ================== TELEGRAM ================== */
 const tg = window.Telegram?.WebApp;
 if (tg) { try { tg.ready(); tg.expand(); tg.setHeaderColor('#08101f'); } catch(e){} }
 
+/* ================== ДАННЫЕ ================== */
 const CATEGORIES = ['Все','Под-системы','Одноразки','Расходники','Жидкости','Аксессуары'];
-const TG = 'zeromanager';
 const products = window.PRODUCTS || [];
+const promocodes = window.PROMOCODES || {};
 let cart = JSON.parse(localStorage.getItem('zero_cart') || '[]');
 let favorites = JSON.parse(localStorage.getItem('zero_fav') || '[]');
+let wallet = JSON.parse(localStorage.getItem('zero_wallet') || '{"balance":0,"usedPromos":[],"history":[]}');
 let cat = 'Все';
 let cur = null;
-let view = 'home'; // home | fav
+let view = 'home';
+let zcToSpend = 0; // сколько ZC списываем в текущей корзине
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
 const fmt = n => Number(n).toLocaleString('ru-RU');
 
-function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove('show'),1800)}
+/* ================== КРИПТО ================== */
+async function sha256Hex(str){
+  const enc = new TextEncoder().encode(str);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+async function signOrder({ zc, total, items, userId, ts }){
+  const data = JSON.stringify({ zc, total, ids: items, userId, ts });
+  const hash = await sha256Hex(data + '|' + COIN_SECRET);
+  return hash.slice(0, 16);
+}
+function makeOrderCode({ ts, sig, zc }){
+  return `ZR-${ts}-${sig}-${zc}`;
+}
+
+/* ================== УТИЛИТЫ ================== */
+function toast(m, cls=''){const t=$('toast');t.className='toast '+cls;t.textContent=m;t.classList.add('show');clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove('show'),2000)}
 function haptic(){try{tg?.HapticFeedback?.impactOccurred('light')}catch(e){}}
-function save(){localStorage.setItem('zero_cart',JSON.stringify(cart));upBadges()}
+function saveCart(){localStorage.setItem('zero_cart',JSON.stringify(cart));upBadges()}
 function saveFav(){localStorage.setItem('zero_fav',JSON.stringify(favorites));upBadges()}
+function saveWallet(){localStorage.setItem('zero_wallet',JSON.stringify(wallet));upBadges();renderBalanceCard();renderWalletModal()}
 function upBadges(){
   const cn = cart.reduce((s,i)=>s+i.qty,0);
   const b = $('badge');
   if(cn>0){b.textContent=cn;b.style.display='flex'}else b.style.display='none';
-
   const fn = favorites.length;
   const fb = $('favBadge');
   if(fn>0){fb.textContent=fn;fb.style.display='flex'}else fb.style.display='none';
 }
-function pulse(el){
-  if(!el) return;
-  el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');
-}
-
+function pulse(el){if(!el)return;el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop')}
 function openTelegramChat(text){
   const url = `https://t.me/${TG}?text=${encodeURIComponent(text)}`;
-  if(tg?.openTelegramLink){
-    try{ tg.openTelegramLink(url); return; }catch(e){}
-  }
-  window.open(url, '_blank');
+  if(tg?.openTelegramLink){try{tg.openTelegramLink(url);return}catch(e){}}
+  window.open(url,'_blank');
 }
-
 function flyToCart(fromEl){
   if(!fromEl || !$('navCart')) return;
   const from = fromEl.getBoundingClientRect();
   const to = $('navCart').getBoundingClientRect();
   const dot = document.createElement('div');
-  dot.className = 'fly-dot';
-  dot.style.left = (from.left + from.width/2 - 11) + 'px';
-  dot.style.top  = (from.top  + from.height/2 - 11) + 'px';
+  dot.className='fly-dot';
+  dot.style.left=(from.left+from.width/2-11)+'px';
+  dot.style.top=(from.top+from.height/2-11)+'px';
   document.body.appendChild(dot);
   requestAnimationFrame(()=>{
-    const dx = (to.left + to.width/2) - (from.left + from.width/2);
-    const dy = (to.top  + to.height/2) - (from.top  + from.height/2);
-    dot.style.transform = `translate(${dx}px, ${dy}px) scale(.55)`;
-    dot.style.opacity = '0.15';
+    const dx=(to.left+to.width/2)-(from.left+from.width/2);
+    const dy=(to.top+to.height/2)-(from.top+from.height/2);
+    dot.style.transform=`translate(${dx}px, ${dy}px) scale(.55)`;
+    dot.style.opacity='0.15';
   });
-  setTimeout(()=>dot.remove(), 800);
+  setTimeout(()=>dot.remove(),800);
 }
 
+/* ================== БАЛАНС ================== */
+function renderBalanceCard(){
+  $('bcVal').innerHTML = wallet.balance + '<small>ZC</small>';
+  $('bcRub').textContent = '≈ ' + fmt(wallet.balance * COIN_RATE) + ' ₽ скидки · нажми, чтобы пополнить';
+}
+function addTx(tx){
+  wallet.history.unshift(tx);
+  if(wallet.history.length > 100) wallet.history = wallet.history.slice(0,100);
+}
+function renderWalletModal(){
+  $('wmVal').innerHTML = wallet.balance + '<small>ZC</small>';
+  const h = $('history');
+  if(!wallet.history.length){
+    h.innerHTML = '<div style="text-align:center;padding:24px 10px;color:#3f5e8a;font-size:12px">Пока нет операций</div>';
+    return;
+  }
+  h.innerHTML = wallet.history.map(tx=>{
+    const date = new Date(tx.ts).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+    const plus = tx.amount > 0;
+    return `
+      <div class="h-item">
+        <div class="lft">
+          <div class="nm">${esc(tx.title)}</div>
+          <div class="dt">${date}</div>
+        </div>
+        <div class="amt ${plus?'plus':'minus'}">${plus?'+':''}${tx.amount} ZC</div>
+      </div>`;
+  }).join('');
+}
+function openWM(){haptic();renderWalletModal();$('wm').classList.add('active');tg?.BackButton?.show()}
+function closeWM(){$('wm').classList.remove('active');if(!$('cm').classList.contains('active') && !$('pm').classList.contains('active'))tg?.BackButton?.hide()}
+
+async function activatePromo(codeRaw){
+  const code = String(codeRaw||'').trim().toUpperCase();
+  if(!code) return toast('Введи промокод','red');
+  const promo = promocodes[code];
+  if(!promo) return toast('❌ Промокод не найден','red');
+  if(promo.until){
+    const end = new Date(promo.until + 'T23:59:59');
+    if(Date.now() > end.getTime()) return toast('❌ Промокод истёк','red');
+  }
+  const usedCount = wallet.usedPromos.filter(c=>c === code).length;
+  const limit = promo.limit ?? 1;
+  if(usedCount >= limit) return toast('❌ Промокод уже использован','red');
+  if(wallet.balance + promo.coins > MAX_BALANCE) return toast('❌ Превышен максимум ZC','red');
+  wallet.balance += promo.coins;
+  wallet.usedPromos.push(code);
+  addTx({ type:'promo', code, amount: promo.coins, ts: Date.now(), title: 'Промокод ' + code + (promo.note ? ' · ' + promo.note : '') });
+  saveWallet();
+  haptic();
+  toast('✅ +' + promo.coins + ' ZC', 'gold');
+}
+
+/* ================== КАТАЛОГ ================== */
 function renderSkeleton(){
-  const html = Array(4).fill(0).map(()=>`
-    <div class="skel">
-      <div class="s-img"></div>
-      <div class="s-line"></div>
-      <div class="s-line b"></div>
-      <div class="s-line c"></div>
-    </div>`).join('');
-  $('grid').innerHTML = html;
+  $('grid').innerHTML = Array(4).fill(0).map(()=>`
+    <div class="skel"><div class="s-img"></div><div class="s-line"></div><div class="s-line b"></div><div class="s-line c"></div></div>`).join('');
 }
-
 function renderCats(){
   $('cats').innerHTML = CATEGORIES.map(c=>`<div class="cat ${c===cat?'active':''}" data-c="${c}">${c}</div>`).join('');
   document.querySelectorAll('.cat').forEach(el=>el.onclick=()=>{haptic();cat=el.dataset.c;renderCats();renderGrid()});
 }
-
 function renderGrid(){
-  // режим "Избранное"
-  if(view === 'fav'){
-    $('cats').style.display = 'none';
-    if(!favorites.length){
-      $('grid').innerHTML = `
-        <div class="empty" style="grid-column:span 2;display:flex;flex-direction:column;align-items:center;gap:14px;padding:60px 20px">
-          <div class="ill" style="width:110px;height:110px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:52px;background:radial-gradient(circle at 50% 40%, rgba(255,77,109,.28), rgba(255,77,109,.05) 70%, transparent 75%);box-shadow:0 0 40px rgba(255,77,109,.25) inset;animation:floaty 3.4s ease-in-out infinite">💔</div>
-          <h3 style="font-size:16px;color:#fff;font-weight:800">В избранном пусто</h3>
-          <p style="font-size:13px;color:#7a93b8;line-height:1.5;max-width:260px">Жми ❤ на карточке товара — и он появится здесь.</p>
-          <button class="go" id="goShop">К товарам</button>
-        </div>`;
-      const g = document.getElementById('goShop');
-      if(g) g.onclick = ()=>{haptic();switchView('home')};
-      return;
-    }
-    const list = products.filter(p=>favorites.includes(p.id));
-    renderCards(list);
-    return;
-  }
-
-  // режим "Главная"
-  $('cats').style.display = 'flex';
+  if(view !== 'home') return;
   const list = cat==='Все'?products:products.filter(p=>p.category===cat);
   if(!list.length){$('grid').innerHTML='<div class="empty">Тут пока пусто</div>';return}
-  renderCards(list);
+  renderCards(list, $('grid'));
 }
-
-function renderCards(list){
-  $('grid').innerHTML = list.map((p, i)=>{
+function renderFav(){
+  const grid = $('grid');
+  grid.innerHTML = '';
+  if(!favorites.length){
+    grid.innerHTML = `
+      <div class="empty" style="grid-column:span 2;display:flex;flex-direction:column;align-items:center;gap:14px;padding:60px 20px">
+        <div style="width:110px;height:110px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:52px;background:radial-gradient(circle at 50% 40%, rgba(255,77,109,.28), rgba(255,77,109,.05) 70%, transparent 75%);box-shadow:0 0 40px rgba(255,77,109,.25) inset;animation:floaty 3.4s ease-in-out infinite">💔</div>
+        <h3 style="font-size:16px;color:#fff;font-weight:800">В избранном пусто</h3>
+        <p style="font-size:13px;color:#7a93b8;line-height:1.5;max-width:260px">Жми ❤ на карточке товара — и он появится здесь.</p>
+        <button class="go" id="goShop" style="background:#2e7eff;color:#fff;border:none;border-radius:40px;padding:13px 26px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 0 24px rgba(46,126,255,.55)">К товарам</button>
+      </div>`;
+    const g=document.getElementById('goShop');if(g)g.onclick=()=>{haptic();switchView('home')};
+    return;
+  }
+  const list = products.filter(p=>favorites.includes(p.id));
+  renderCards(list, grid);
+}
+function renderCards(list, target){
+  target.innerHTML = list.map((p,i)=>{
     const isFav = favorites.includes(p.id);
     return `
       <div class="card ${p.comingSoon?'soon':''}" data-id="${p.id}" style="animation-delay:${Math.min(i*45,400)}ms">
@@ -409,29 +505,24 @@ function renderCards(list){
         </div>
       </div>`;
   }).join('');
-
-  document.querySelectorAll('.card').forEach(c=>{
+  target.querySelectorAll('.card').forEach(c=>{
     c.onclick = e=>{
       if(e.target.closest('[data-add]')) return;
       if(e.target.closest('[data-fav]')) return;
       openPM(c.dataset.id);
     };
   });
-  document.querySelectorAll('[data-add]').forEach(b=>{
+  target.querySelectorAll('[data-add]').forEach(b=>{
     b.onclick = e=>{
       e.stopPropagation();
       const p = products.find(x=>x.id===b.dataset.add);
       if(p?.comingSoon){toast('⏳ Скоро в продаже');return}
-      flyToCart(b);
-      b.classList.remove('bump');void b.offsetWidth;b.classList.add('bump');
+      flyToCart(b);b.classList.remove('bump');void b.offsetWidth;b.classList.add('bump');
       addToCart(b.dataset.add);
     };
   });
-  document.querySelectorAll('[data-fav]').forEach(el=>{
-    el.onclick = e=>{
-      e.stopPropagation();
-      toggleFav(el.dataset.fav, el);
-    };
+  target.querySelectorAll('[data-fav]').forEach(el=>{
+    el.onclick = e=>{e.stopPropagation();toggleFav(el.dataset.fav, el)};
   });
 }
 
@@ -441,18 +532,14 @@ function toggleFav(id, el){
   if(i === -1){
     favorites.push(id);
     if(el){el.classList.add('on');el.textContent='♥'}
-    toast('❤ Добавлено в избранное');
-    pulse($('favBadge'));
+    toast('❤ Добавлено в избранное');pulse($('favBadge'));
   } else {
     favorites.splice(i,1);
     if(el){el.classList.remove('on');el.textContent='♡'}
     toast('💔 Убрано из избранного');
   }
   saveFav();
-  if(view === 'fav'){
-    // если удаляем прямо в избранном — перерисуем
-    setTimeout(renderGrid, 60);
-  }
+  if(view === 'fav') setTimeout(renderFav, 60);
 }
 
 function openPM(id){
@@ -463,34 +550,24 @@ function openPM(id){
   $('mn').textContent = p.name;
   $('md').textContent = p.description || 'Описание отсутствует';
   $('mp').innerHTML = `${fmt(p.price)} <small>₽</small>`;
-
   const addBtn = $('mAdd');
   const old = document.getElementById('mSoon'); if(old) old.remove();
   const oldDate = document.getElementById('mSoonDate'); if(oldDate) oldDate.remove();
-
   if(p.comingSoon){
     const badge = document.createElement('div');
-    badge.id = 'mSoon';
-    badge.className = 'm-soon';
-    badge.textContent = '⏳ Скоро в продаже';
+    badge.id='mSoon';badge.className='m-soon';badge.textContent='⏳ Скоро в продаже';
     $('mn').insertAdjacentElement('afterend', badge);
     if(p.comingSoonDate){
-      const d = document.createElement('div');
-      d.id = 'mSoonDate';
-      d.className = 'm-soon-date';
-      d.textContent = 'Ожидается: ' + p.comingSoonDate;
+      const d=document.createElement('div');d.id='mSoonDate';d.className='m-soon-date';d.textContent='Ожидается: '+p.comingSoonDate;
       badge.insertAdjacentElement('afterend', d);
     }
-    addBtn.disabled = true;
-    addBtn.textContent = 'Скоро в продаже';
+    addBtn.disabled = true; addBtn.textContent = 'Скоро в продаже';
   } else {
-    addBtn.disabled = false;
-    addBtn.textContent = 'Добавить в корзину';
+    addBtn.disabled = false; addBtn.textContent = 'Добавить в корзину';
   }
-  $('pm').classList.add('active');
-  tg?.BackButton?.show();
+  $('pm').classList.add('active');tg?.BackButton?.show();
 }
-function closePM(){$('pm').classList.remove('active');cur=null;if(!$('cm').classList.contains('active'))tg?.BackButton?.hide()}
+function closePM(){$('pm').classList.remove('active');cur=null;if(!$('cm').classList.contains('active') && !$('wm').classList.contains('active'))tg?.BackButton?.hide()}
 
 function addToCart(id){
   const p = products.find(x=>x.id===id); if(!p)return;
@@ -498,19 +575,19 @@ function addToCart(id){
   haptic();
   const ex = cart.find(i=>i.id===id);
   if(ex) ex.qty++; else cart.push({id:p.id,name:p.name,price:+p.price,image:p.image||'',qty:1});
-  save(); pulse($('badge'));
-  toast('✅ Добавлено');
+  saveCart(); pulse($('badge')); toast('✅ Добавлено');
 }
-
 function changeQty(id,d){
   haptic();
   const it = cart.find(i=>i.id===id); if(!it)return;
   it.qty += d;
   if(it.qty<=0) cart = cart.filter(i=>i.id!==id);
-  save(); renderCart();
+  saveCart(); renderCart();
 }
-function removeItem(id){haptic();cart=cart.filter(i=>i.id!==id);save();renderCart()}
-function total(){return cart.reduce((s,i)=>s+i.price*i.qty,0)}
+function removeItem(id){haptic();cart=cart.filter(i=>i.id!==id);saveCart();renderCart()}
+function cartTotal(){return cart.reduce((s,i)=>s+i.price*i.qty,0)}
+
+function maxZC(){return Math.min(wallet.balance, MAX_ZC_PER_ORDER, cartTotal())}
 
 function renderCart(){
   if(!cart.length){
@@ -521,13 +598,16 @@ function renderCart(){
         <p>Самое время выбрать что-нибудь вкусное — загляни в каталог.</p>
         <button class="go" id="goCatalog">Перейти в каталог</button>
       </div>`;
-    $('goCatalog').onclick = () => {
-      haptic();
-      closeCM();
-      switchView('home');
-    };
+    $('goCatalog').onclick = () => {haptic();closeCM();switchView('home')};
     return;
   }
+  const sum = cartTotal();
+  const m = maxZC();
+  if(zcToSpend > m) zcToSpend = m;
+  const applied = Math.min(zcToSpend, m);
+  const finalSum = Math.max(0, sum - applied * COIN_RATE);
+  const canUse = wallet.balance > 0;
+
   $('cartBody').innerHTML = `
     <div class="cart-list">
       ${cart.map(i=>`
@@ -545,27 +625,83 @@ function renderCart(){
           <button class="rm" data-r="${i.id}">✕</button>
         </div>`).join('')}
     </div>
-    <div class="total"><span class="l">Итого</span><span class="v">${fmt(total())} ₽</span></div>
+    <div class="total"><span class="l">Сумма заказа</span><span class="v">${fmt(sum)} ₽</span></div>
+
+    ${canUse ? `
+    <div class="zc-picker">
+      <div class="top">
+        <div class="lbl">💰 Оплатить Zero Coins</div>
+        <div class="avail">Доступно: <b>${fmt(wallet.balance)}</b> ZC</div>
+      </div>
+      <input type="range" class="zc-slider" id="zcSlider" min="0" max="${m}" value="${applied}" step="1">
+      <div class="zc-btns">
+        <button id="zcZero">0 ZC</button>
+        <button id="zcHalf">50%</button>
+        <button id="zcMax">Списать всё · ${fmt(m)}</button>
+      </div>
+      <div class="zc-calc">
+        <span>Списание: <b class="p">${fmt(applied)} ZC</b></span>
+        <span>Скидка: <b class="p">−${fmt(applied * COIN_RATE)} ₽</b></span>
+      </div>
+    </div>` : `
+    <div class="zc-picker" style="border-color:rgba(46,126,255,.35);background:linear-gradient(135deg,#0a1730,#0a1730)">
+      <div class="top"><div class="lbl" style="color:#8aa6c8">💰 Zero Coins</div></div>
+      <div style="font-size:12px;color:#7a93b8">Заработай ZC за промокоды — плашка с балансом сверху на главной.</div>
+    </div>`}
+
+    <div class="final-total">
+      <span class="l">К оплате</span>
+      <span class="v">${fmt(finalSum)} <small>₽</small></span>
+    </div>
     <button class="btn" id="co">Оформить заказ →</button>`;
+
   $('cartBody').querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>changeQty(b.dataset.p,1));
   $('cartBody').querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>changeQty(b.dataset.m,-1));
   $('cartBody').querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>removeItem(b.dataset.r));
+
+  const slider = $('zcSlider');
+  if(slider){
+    slider.oninput = () => { zcToSpend = +slider.value; renderCart(); };
+    $('zcZero').onclick = () => { zcToSpend = 0; renderCart(); };
+    $('zcHalf').onclick = () => { zcToSpend = Math.floor(m / 2); renderCart(); };
+    $('zcMax').onclick  = () => { zcToSpend = m; renderCart(); };
+  }
   $('co').onclick = checkout;
 }
 
-function openCM(){haptic();renderCart();$('cm').classList.add('active');tg?.BackButton?.show()}
-function closeCM(){$('cm').classList.remove('active');if(!$('pm').classList.contains('active'))tg?.BackButton?.hide()}
+function openCM(){haptic();zcToSpend = 0;renderCart();$('cm').classList.add('active');tg?.BackButton?.show()}
+function closeCM(){$('cm').classList.remove('active');if(!$('pm').classList.contains('active') && !$('wm').classList.contains('active'))tg?.BackButton?.hide()}
 
 function switchView(v){
   view = v;
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  if(v === 'home') $('navHome').classList.add('active');
-  if(v === 'fav')  $('navFav').classList.add('active');
-  renderGrid();
+  if(v==='home') $('navHome').classList.add('active');
+  if(v==='fav') $('navFav').classList.add('active');
+  $('cats').style.display = (v==='home') ? 'flex' : 'none';
+  $('customOrder').style.display = (v==='home') ? 'flex' : 'none';
+  if(v==='home') renderGrid();
+  if(v==='fav') renderFav();
 }
 
-function buildOrderText(){
+/* ================== ОФОРМЛЕНИЕ ================== */
+async function checkout(){
+  if(!cart.length) return;
+  haptic();
+  const sum = cartTotal();
+  const m = maxZC();
+  const applied = Math.min(zcToSpend, m);
+  const finalSum = Math.max(0, sum - applied * COIN_RATE);
+
+  const userId = String(tg?.initDataUnsafe?.user?.id || 'local');
+  const ts = Date.now();
+  const items = cart.map(i=>i.id);
+  const sig = applied > 0 ? await signOrder({ zc: applied, total: sum, items, userId, ts }) : '';
+  const code = applied > 0 ? makeOrderCode({ ts, sig, zc: applied }) : '';
+
   const lines = [];
+  const uname = tg?.initDataUnsafe?.user?.username;
+  const fname = tg?.initDataUnsafe?.user?.first_name;
+  if(fname) lines.push('👤 ' + fname + (uname ? ' (@'+uname+')' : ''));
   lines.push('🛒 Заказ в Zero Shop');
   lines.push('');
   cart.forEach((i, n) => {
@@ -573,47 +709,56 @@ function buildOrderText(){
     lines.push(`   ${i.qty} × ${fmt(i.price)} ₽ = ${fmt(i.price * i.qty)} ₽`);
   });
   lines.push('');
-  lines.push(`💰 Итого: ${fmt(total())} ₽`);
+  lines.push(`💰 Сумма заказа: ${fmt(sum)} ₽`);
+  if(applied > 0){
+    lines.push(`🎁 Списано ZC: ${fmt(applied)} ZC`);
+    lines.push(`💵 К оплате: ${fmt(finalSum)} ₽`);
+    lines.push('');
+    lines.push(`🔐 Код проверки: ${code}`);
+    lines.push('⚠️ Проверьте код перед подтверждением');
+  } else {
+    lines.push(`💵 К оплате: ${fmt(finalSum)} ₽`);
+  }
   lines.push('');
   lines.push('Пожалуйста, подтвердите заказ 🙌');
-  return lines.join('\n');
+
+  if(applied > 0){
+    wallet.balance -= applied;
+    addTx({ type:'spend', amount: -applied, ts: Date.now(), title: 'Оплата заказа ZC' });
+    saveWallet();
+  }
+
+  openTelegramChat(lines.join('\n'));
+  toast(applied > 0 ? '📩 Заказ отправлен · списано ' + fmt(applied) + ' ZC' : '📩 Открываю чат с менеджером...', applied > 0 ? 'gold' : '');
+  cart = []; zcToSpend = 0; saveCart();
+  setTimeout(closeCM, 300);
 }
 
-function checkout(){
-  if(!cart.length) return;
-  haptic();
-  openTelegramChat(buildOrderText());
-  toast('📩 Открываю чат с менеджером...');
-  cart = []; save(); renderCart();
-}
-
+/* ================== СТАРТ ================== */
 document.addEventListener('DOMContentLoaded',()=>{
-  renderSkeleton();
-  renderCats();
-  upBadges();
-
-  // лёгкая задержка, чтобы пользователь увидел скелетоны
+  renderSkeleton(); renderCats(); upBadges(); renderBalanceCard(); renderWalletModal();
   setTimeout(()=>{ renderGrid(); }, 250);
 
-  $('navHome').onclick = ()=>{haptic();closeCM();closePM();switchView('home')};
-  $('navFav').onclick  = ()=>{haptic();closeCM();closePM();switchView('fav')};
+  $('balanceCard').onclick = openWM;
+  $('navHome').onclick = ()=>{haptic();closeCM();closePM();closeWM();switchView('home')};
+  $('navFav').onclick  = ()=>{haptic();closeCM();closePM();closeWM();switchView('fav')};
   $('navCart').onclick = ()=>{document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));$('navCart').classList.add('active');openCM()};
   $('tgBtn').onclick   = ()=>{haptic();openTelegramChat('👋 Привет! Есть вопрос по магазину Zero Shop.')};
+  $('customOrderBtn').onclick = () => {haptic();openTelegramChat('👋 Привет! Хочу заказать товар под заказ.\n\nЧто интересует: ')};
 
-  $('customOrderBtn').onclick = () => {
-    haptic();
-    openTelegramChat('👋 Привет! Хочу заказать товар под заказ.\n\nЧто интересует: ');
-  };
+  $('promoBtn').onclick = () => {const v = $('promoInput').value; activatePromo(v).then(()=>{$('promoInput').value=''})};
+  $('promoInput').addEventListener('keydown', e=>{if(e.key==='Enter'){e.preventDefault();$('promoBtn').click()}});
 
   $('mAdd').onclick = ()=>{if(cur && !cur.comingSoon){addToCart(cur.id);closePM()}};
-
   $('pm').onclick = e=>{if(e.target===$('pm'))closePM()};
   $('cm').onclick = e=>{if(e.target===$('cm'))closeCM()};
+  $('wm').onclick = e=>{if(e.target===$('wm'))closeWM()};
 
   tg?.BackButton?.onClick(()=>{
     if($('cm').classList.contains('active'))closeCM();
     else if($('pm').classList.contains('active'))closePM();
-    else if(view === 'fav') switchView('home');
+    else if($('wm').classList.contains('active'))closeWM();
+    else if(view !== 'home') switchView('home');
   });
 });
 </script>
