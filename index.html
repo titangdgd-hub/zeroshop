@@ -25,56 +25,33 @@ body::before{
 .head-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:4px}
 h1{font-size:24px;font-weight:800;color:#fff}
 h1 span{color:#2e7eff;text-shadow:0 0 20px rgba(46,126,255,.6)}
-.tg-mini{
-  width:38px;height:38px;border-radius:12px;
-  background:#0d1629;border:1px solid rgba(46,126,255,.5);
-  color:#2e7eff;font-size:18px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;transition:.2s;flex-shrink:0;
-}
+.tg-mini{width:38px;height:38px;border-radius:12px;background:#0d1629;border:1px solid rgba(46,126,255,.5);color:#2e7eff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;flex-shrink:0}
 .tg-mini:hover{background:rgba(46,126,255,.15);transform:translateY(-1px)}
 .sub{font-size:13px;color:#7a93b8;margin-bottom:14px}
-
-/* Плашка баланса */
 .balance-card{
   position:relative;overflow:hidden;cursor:pointer;
   display:flex;align-items:center;gap:14px;
   padding:14px 16px;margin-bottom:16px;
   background:radial-gradient(circle at 15% 20%, rgba(255,206,74,.28), transparent 55%),linear-gradient(135deg,#1a1305,#0a1730 70%);
   border:1px solid rgba(255,206,74,.55);border-radius:18px;
-  box-shadow:0 0 24px rgba(255,206,74,.22);
-  transition:.2s;
+  box-shadow:0 0 24px rgba(255,206,74,.22);transition:.2s;
 }
 .balance-card:hover{transform:translateY(-2px);box-shadow:0 0 30px rgba(255,206,74,.4)}
-.balance-card::after{
-  content:'';position:absolute;inset:-1px;
-  background:linear-gradient(115deg,transparent 30%,rgba(255,220,142,.28) 50%,transparent 70%);
-  animation:co-shine 6s linear infinite;pointer-events:none;
-}
+.balance-card::after{content:'';position:absolute;inset:-1px;background:linear-gradient(115deg,transparent 30%,rgba(255,220,142,.28) 50%,transparent 70%);animation:co-shine 6s linear infinite;pointer-events:none}
 @keyframes co-shine{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-.balance-card .ic{
-  width:42px;height:42px;border-radius:12px;
-  background:radial-gradient(circle at 40% 35%,rgba(255,206,74,.5),rgba(255,206,74,.15));
-  border:1px solid rgba(255,206,74,.7);
-  display:flex;align-items:center;justify-content:center;font-size:22px;
-  box-shadow:0 0 16px rgba(255,206,74,.5);flex-shrink:0;
-}
+.balance-card .ic{width:42px;height:42px;border-radius:12px;background:radial-gradient(circle at 40% 35%,rgba(255,206,74,.5),rgba(255,206,74,.15));border:1px solid rgba(255,206,74,.7);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 0 16px rgba(255,206,74,.5);flex-shrink:0}
 .balance-card .txt{flex:1;min-width:0;position:relative;z-index:1}
 .balance-card .lbl{font-size:10px;color:#ffce4a;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;margin-bottom:2px}
 .balance-card .val{font-size:22px;font-weight:900;color:#fff;line-height:1.1;text-shadow:0 0 14px rgba(255,206,74,.5)}
 .balance-card .val small{font-size:12px;color:#ffce4a;font-weight:800;margin-left:4px}
 .balance-card .rub{font-size:11px;color:#a89060;margin-top:2px}
 .balance-card .chev{color:#ffce4a;font-size:20px;font-weight:800;flex-shrink:0}
-
 .cats{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;scrollbar-width:none}
 .cats::-webkit-scrollbar{height:0}
 .cat{flex-shrink:0;padding:8px 16px;background:#0d1629;border:1px solid #1e3a6b;border-radius:40px;color:#6b8cff;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
 .cat.active{background:#1e3a6b;border-color:#2e7eff;color:#fff;box-shadow:0 0 16px rgba(46,126,255,.5)}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
-.card{
-  position:relative;overflow:hidden;background:#0d1629;border-radius:18px;padding:12px;
-  border:1px solid rgba(30,80,180,.25);cursor:pointer;display:flex;flex-direction:column;gap:8px;
-  transition:.25s;animation:cardIn .4s ease both;
-}
+.card{position:relative;overflow:hidden;background:#0d1629;border-radius:18px;padding:12px;border:1px solid rgba(30,80,180,.25);cursor:pointer;display:flex;flex-direction:column;gap:8px;transition:.25s;animation:cardIn .4s ease both}
 @keyframes cardIn{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
 .card:hover{border-color:rgba(46,126,255,.7);transform:translateY(-2px)}
 .card.soon{border-color:rgba(255,209,102,.35)}
@@ -155,40 +132,19 @@ h1 span{color:#2e7eff;text-shadow:0 0 20px rgba(46,126,255,.6)}
 .total{display:flex;justify-content:space-between;align-items:center;padding:14px;background:#0d1629;border:1px solid rgba(46,126,255,.4);border-radius:16px;margin-bottom:10px}
 .total .l{font-size:12px;color:#7a93b8;font-weight:700;text-transform:uppercase;letter-spacing:1px}
 .total .v{font-size:20px;font-weight:800;color:#2e7eff}
-
-/* Блок списания ZC в корзине */
-.zc-picker{
-  background:linear-gradient(135deg,#1a1305,#0a1730);
-  border:1px solid rgba(255,206,74,.45);border-radius:16px;
-  padding:14px;margin-bottom:12px;
-}
+.zc-picker{background:linear-gradient(135deg,#1a1305,#0a1730);border:1px solid rgba(255,206,74,.45);border-radius:16px;padding:14px;margin-bottom:12px}
 .zc-picker .top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
 .zc-picker .lbl{font-size:11px;color:#ffce4a;text-transform:uppercase;letter-spacing:1.5px;font-weight:800}
 .zc-picker .avail{font-size:12px;color:#d6c08a}
 .zc-picker .avail b{color:#fff;font-weight:900}
-.zc-slider{
-  width:100%;-webkit-appearance:none;appearance:none;
-  height:6px;border-radius:40px;background:#3a2a05;outline:none;margin:6px 0 8px;
-}
-.zc-slider::-webkit-slider-thumb{
-  -webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;
-  background:linear-gradient(135deg,#ffce4a,#ff9a1f);
-  cursor:pointer;box-shadow:0 0 12px rgba(255,206,74,.9);border:2px solid #fff;
-}
-.zc-slider::-moz-range-thumb{
-  width:22px;height:22px;border-radius:50%;border:2px solid #fff;
-  background:linear-gradient(135deg,#ffce4a,#ff9a1f);cursor:pointer;box-shadow:0 0 12px rgba(255,206,74,.9);
-}
+.zc-slider{width:100%;-webkit-appearance:none;appearance:none;height:6px;border-radius:40px;background:#3a2a05;outline:none;margin:6px 0 8px}
+.zc-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#ffce4a,#ff9a1f);cursor:pointer;box-shadow:0 0 12px rgba(255,206,74,.9);border:2px solid #fff}
+.zc-slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;border:2px solid #fff;background:linear-gradient(135deg,#ffce4a,#ff9a1f);cursor:pointer;box-shadow:0 0 12px rgba(255,206,74,.9)}
 .zc-btns{display:flex;gap:8px}
-.zc-btns button{
-  flex:1;background:#0d1629;color:#ffce4a;border:1px solid rgba(255,206,74,.45);
-  border-radius:40px;padding:8px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;
-  transition:.2s;
-}
+.zc-btns button{flex:1;background:#0d1629;color:#ffce4a;border:1px solid rgba(255,206,74,.45);border-radius:40px;padding:8px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;transition:.2s}
 .zc-btns button:hover{background:rgba(255,206,74,.12)}
 .zc-calc{display:flex;justify-content:space-between;margin-top:10px;font-size:13px}
 .zc-calc .p{color:#ffce4a;font-weight:800}
-
 .final-total{display:flex;justify-content:space-between;align-items:center;padding:16px;background:#0d1629;border:1px solid rgba(46,126,255,.6);border-radius:16px;margin-bottom:14px}
 .final-total .l{font-size:12px;color:#7a93b8;font-weight:700;text-transform:uppercase;letter-spacing:1px}
 .final-total .v{font-size:24px;font-weight:900;color:#fff}
@@ -200,20 +156,12 @@ h1 span{color:#2e7eff;text-shadow:0 0 20px rgba(46,126,255,.6)}
 .cart-empty p{font-size:13px;color:#7a93b8;line-height:1.5;margin:0;max-width:280px}
 .cart-empty .go{margin-top:8px;background:#2e7eff;color:#fff;border:none;border-radius:40px;padding:13px 26px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 0 24px rgba(46,126,255,.55);transition:.2s}
 .cart-empty .go:hover{background:#4a8eff;transform:translateY(-1px)}
-
-/* Кошелёк-модалка */
-.wallet-hero{
-  position:relative;overflow:hidden;
-  padding:22px;border-radius:20px;margin-bottom:18px;
-  background:radial-gradient(circle at 20% 20%, rgba(255,206,74,.32), transparent 55%),linear-gradient(135deg,#1a1305,#0a1730 70%);
-  border:1px solid rgba(255,206,74,.55);
-  box-shadow:0 0 30px rgba(255,206,74,.28);
-}
+.wallet-hero{position:relative;overflow:hidden;padding:22px;border-radius:20px;margin-bottom:18px;background:radial-gradient(circle at 20% 20%, rgba(255,206,74,.32), transparent 55%),linear-gradient(135deg,#1a1305,#0a1730 70%);border:1px solid rgba(255,206,74,.55);box-shadow:0 0 30px rgba(255,206,74,.28)}
 .wallet-hero::after{content:'';position:absolute;inset:-1px;background:linear-gradient(115deg,transparent 30%,rgba(255,220,142,.3) 50%,transparent 70%);animation:co-shine 6s linear infinite;pointer-events:none}
 .wallet-hero .lbl{font-size:11px;color:#ffce4a;text-transform:uppercase;letter-spacing:2px;font-weight:800;margin-bottom:6px;position:relative;z-index:1}
 .wallet-hero .val{font-size:42px;font-weight:900;color:#fff;line-height:1;text-shadow:0 0 24px rgba(255,206,74,.6);position:relative;z-index:1}
 .wallet-hero .val small{font-size:18px;color:#ffce4a;font-weight:800;margin-left:6px}
-.wallet-hero .rate{font-size:12px;color:#a89060;margin-top:10px;position:relative;z-index:1;display:flex;align-items:center;gap:6px}
+.wallet-hero .rate{font-size:12px;color:#a89060;margin-top:10px;position:relative;z-index:1}
 .wallet-hero .rate b{color:#ffce4a;font-weight:800}
 .promo-row{display:flex;gap:8px;margin-bottom:14px}
 .promo-row input{flex:1;background:#0d1629;border:1px solid #1e3a6b;border-radius:12px;padding:12px 14px;color:#e0ecff;font-size:14px;font-family:inherit;outline:none;text-transform:uppercase;letter-spacing:1px}
@@ -229,7 +177,6 @@ h1 span{color:#2e7eff;text-shadow:0 0 20px rgba(46,126,255,.6)}
 .h-item .amt{font-weight:800;font-size:14px;flex-shrink:0;margin-left:10px}
 .h-item .amt.plus{color:#33e08a}
 .h-item .amt.minus{color:#ff8b8b}
-
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);background:#2e7eff;color:#fff;padding:12px 24px;border-radius:40px;font-weight:700;font-size:13px;box-shadow:0 0 30px rgba(46,126,255,.8);opacity:0;transition:.3s;pointer-events:none;z-index:2000;white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 .toast.gold{background:linear-gradient(90deg,#ffce4a,#ff9a1f);color:#3a1a00;box-shadow:0 0 30px rgba(255,181,50,.85)}
@@ -245,7 +192,6 @@ h1 span{color:#2e7eff;text-shadow:0 0 20px rgba(46,126,255,.6)}
   </div>
   <p class="sub">Твой вейп-шоп №1</p>
 
-  <!-- Плашка с балансом -->
   <div class="balance-card" id="balanceCard">
     <div class="ic">💰</div>
     <div class="txt">
@@ -275,24 +221,20 @@ h1 span{color:#2e7eff;text-shadow:0 0 20px rgba(46,126,255,.6)}
   </div>
 </div>
 
-<!-- Модалка кошелька -->
 <div class="overlay" id="wm">
   <div class="modal">
     <button class="close" onclick="closeWM()">✕</button>
     <div style="font-size:20px;font-weight:800;color:#fff;margin-bottom:16px">💰 Zero Coins</div>
-
     <div class="wallet-hero">
       <div class="lbl">Твой баланс</div>
       <div class="val" id="wmVal">0<small>ZC</small></div>
       <div class="rate">Курс: <b>1 ZC = 1 ₽</b></div>
     </div>
-
     <div class="section-ttl">Активировать промокод</div>
     <div class="promo-row">
       <input type="text" id="promoInput" placeholder="ZERO100" maxlength="24">
       <button id="promoBtn">Активировать</button>
     </div>
-
     <div class="section-ttl">История</div>
     <div class="history" id="history"></div>
   </div>
@@ -326,7 +268,7 @@ h1 span{color:#2e7eff;text-shadow:0 0 20px rgba(46,126,255,.6)}
 /* ================== КОНФИГ ================== */
 const TG = 'zeromanager';
 const COIN_SECRET = 'zs_2025_x9f3_a7b1c4e8';
-const COIN_RATE = 1;             // 1 ZC = 1 ₽
+const COIN_RATE = 1;
 const MAX_ZC_PER_ORDER = 500;
 const MAX_BALANCE = 10000;
 const ALLOW_PARTIAL = true;
@@ -345,7 +287,7 @@ let wallet = JSON.parse(localStorage.getItem('zero_wallet') || '{"balance":0,"us
 let cat = 'Все';
 let cur = null;
 let view = 'home';
-let zcToSpend = 0; // сколько ZC списываем в текущей корзине
+let zcToSpend = 0;
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
@@ -357,13 +299,24 @@ async function sha256Hex(str){
   const buf = await crypto.subtle.digest('SHA-256', enc);
   return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
 }
-async function signOrder({ zc, total, items, userId, ts }){
-  const data = JSON.stringify({ zc, total, ids: items, userId, ts });
-  const hash = await sha256Hex(data + '|' + COIN_SECRET);
-  return hash.slice(0, 16);
+function b64urlEncode(str){
+  const bytes = new TextEncoder().encode(str);
+  let bin = '';
+  bytes.forEach(b => bin += String.fromCharCode(b));
+  return btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
 }
-function makeOrderCode({ ts, sig, zc }){
-  return `ZR-${ts}-${sig}-${zc}`;
+function b64urlDecode(s){
+  s = String(s||'').replace(/-/g,'+').replace(/_/g,'/');
+  while(s.length % 4) s += '=';
+  const bin = atob(s);
+  const bytes = new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) bytes[i] = bin.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+async function makeSignedCode({ zc, total, items, userId, ts }){
+  const payload = JSON.stringify({ z: zc, t: total, u: String(userId), i: items, n: ts });
+  const sig = (await sha256Hex(payload + '|' + COIN_SECRET)).slice(0, 16);
+  return `ZR.${b64urlEncode(payload)}.${sig}`;
 }
 
 /* ================== УТИЛИТЫ ================== */
@@ -586,7 +539,6 @@ function changeQty(id,d){
 }
 function removeItem(id){haptic();cart=cart.filter(i=>i.id!==id);saveCart();renderCart()}
 function cartTotal(){return cart.reduce((s,i)=>s+i.price*i.qty,0)}
-
 function maxZC(){return Math.min(wallet.balance, MAX_ZC_PER_ORDER, cartTotal())}
 
 function renderCart(){
@@ -695,8 +647,7 @@ async function checkout(){
   const userId = String(tg?.initDataUnsafe?.user?.id || 'local');
   const ts = Date.now();
   const items = cart.map(i=>i.id);
-  const sig = applied > 0 ? await signOrder({ zc: applied, total: sum, items, userId, ts }) : '';
-  const code = applied > 0 ? makeOrderCode({ ts, sig, zc: applied }) : '';
+  const code = applied > 0 ? await makeSignedCode({ zc: applied, total: sum, items, userId, ts }) : '';
 
   const lines = [];
   const uname = tg?.initDataUnsafe?.user?.username;
