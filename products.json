@@ -13,7 +13,7 @@ window.PRODUCTS = [
     id: '1790689742271',
     category: 'Расходники',
     name: 'Снюс VELO',
-    price: 150,
+    price: 200,
     image: 'i.jpg',
     description: 'Новинка, ожидается в ближайшее время',
     comingSoon: true,
