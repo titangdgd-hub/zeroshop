@@ -9,7 +9,7 @@ window.PRODUCTS = [
     comingSoon: false,
     comingSoonDate: ''
   },
-   {
+     {
     id: '1790689742279',
     category: 'Одноразки',
     name: 'Angry Vape Fury Max',
