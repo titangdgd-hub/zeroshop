@@ -14,7 +14,7 @@ window.PRODUCTS = [
     category: 'Одноразки',
     name: 'Angry Vape Fury Max',
     price: 400,
-    image: '12899.970.jpg',
+    image: '12899.970.png',
     description: 'Новинка, ожидается в ближайшее время',
     comingSoon: true,
     comingSoonDate: '23 октября'
